@@ -29,8 +29,6 @@ $('#vstg-edit-button').on("click",function(){
     if (checkSearchValue()){
         populateDataForEditDelete('varedit');
     }
-    
-
 });
 
 $('#vstg-delete-button').on("click",function(){
@@ -107,7 +105,13 @@ $('#vstg-search-button').on("click",function(){
     if (checkSearchValue()){
         populateVariableInfo();
     }
-   
+});
+$("#vstg-search-box").on('keyup', function (e) {
+    if (e.keyCode == 13) {
+        if (checkSearchValue()){
+            populateVariableInfo();
+        }
+    }
 });
 
 $('#vstg-varedit-addcase-button').on("click",function(){
