@@ -1,0 +1,83 @@
+<div class="col-md-12" id="welcome-component" style="display: none;">
+    <div class="centered">
+        <div class="col-xs-6 col-md-5">
+            <h3>Hello ! <span class="label label-default" id="user-span"> <%= session.name%></span></h3>
+            <h3>What can I do for you ? </h3>
+            <img src="images/default.jpg" class="img-circle" alt="Avatar not found" id="user-avatar">
+            <ul class="nav nav-tabs span2 clearfix"></ul>
+            <div class="btn-group" role="group" style="margin-top:10px;">
+                <button type="button" class="btn btn-default" id="user-change-avatar-button">Change Picture </button>
+                <button type="button" class="btn btn-default" id="user-change-pass-button">Change Password</button>
+                <button type="button" class="btn btn-default" id="user-logout-button">Logout</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" id="change-avatar-component" style="display: none;">
+    <div class="centered" style="margin-top:10px;">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Upload Image</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <span class="btn btn-default btn-file">
+                            Browse… <input type="file" id="imgInp">
+                        </span>
+                    </span>
+                    <input type="text" class="form-control" readonly>
+                </div>
+                <button type="button" class="btn btn-default" id="user-change-avatar-confirm-button" style="margin-top:10px;">Confirm </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" id="change-pass-component" style="display: none;">
+    <div class="centered">
+        <div class="form-horizontal" style="margin-top:10px;">
+
+        <!-- Password input-->
+        <div class="form-group">
+          <div class="col-md-12">
+            <input id="user-old-pass" name="old_password" type="password" placeholder="Old Password" class="form-control input-md" required="">
+
+          </div>
+        </div>
+
+        <!-- Password input-->
+        <div class="form-group">
+          <div class="col-md-12">
+            <input id="user-new-pass" name="new_password" type="password" placeholder="New Password" class="form-control input-md" required="">
+
+          </div>
+        </div>
+
+        <!-- Password input-->
+        <div class="form-group">
+          <div class="col-md-12">
+            <input id="user-confirm-pass" type="password" placeholder="Confirm New Password" class="form-control input-md" required="">
+
+          </div>
+        </div>
+
+        <!-- Button (Double) -->
+        <div class="form-group">
+          <div class="col-md-8">
+            <button id="user-change-pass-confirm" class="btn btn-success">Submit</button>
+          </div>
+        </div>
+        </div>
+    </div>
+</div>
+<blockquote id="welcome-footer-component" style="display: none;">
+    <div class="centered" >
+        <p style="margin-top:20px;">
+            Transtron (Thailand) Co., Ltd
+        </p> 
+        
+    </div>
+    <div class="centered">
+    <small>This Website is KBS (Knowledge Base System) of Transtron (Thailand) Co., Ltd
+            <br>This KBS Was Established @2017
+        </small>
+    </div>
+</blockquote>

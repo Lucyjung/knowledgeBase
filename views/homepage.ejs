@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#home" id="home-tab" data-toggle="tab">Home</a>
+                </li>
+                <li id="nav-tab-vstg" style="display: none;">
+                    <a href="#vstg" id="vstg-tab" data-toggle="tab">VSTG</a>
+                </li>
+                <li id="nav-tab-admin" style="display: none;">
+                    <a href="#admin" id="admin-tab" data-toggle="tab">Admin</a>
+                </li>
+                <img class="logo pull-right" alt="Transtron" src="/images/logo.png">
+            </ul>
+
+        </div>
+    </div>
+    <div class="row">
+        <%- include loading.ejs%>
+        <%- include kbs_home.ejs%>
+        <%- include vstg.ejs%>
+        <%- include welcome.ejs%>
+        <%- include locals.ejs%>
+        <%- include admin.ejs%>
+    </div>
+    
+</div>

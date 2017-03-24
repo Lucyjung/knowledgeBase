@@ -1,0 +1,33 @@
+Front-end
+1. Home Page
+2. VSTG Page
+3. Search Page
+4. Search2 Page
+5. Add Page 
+6. Add2 Page
+7. Add case Page
+8. edit Page
+9. edit2 Page
+10. delete Page 
+11. Approve Page
+
+
+Back-end
+1. User login
+2. variable (add/query/delete/edit)
+   2.1 edit - (add new version and keep old version)
+3. File upload (CSV file)
+4. Decode DD 
+
+
+Proxy setting 
+Original
+10.164.225.*;10.164.232.*;127.0.0.1;*.fujitsu.*;*.local
+New
+localhost; 127.0.0.1; tttweb01.transtron.fujitsu.com; 10.164.225.31; 10.164.232.200; vm-eng-svn02.transtron.fujitsu.com; eng-pmaid; tttpc087
+
+
+T600-ISZ_STD-ECM-K11-004_6-2
+T600-ISZ_STD-ECM-K11-006_7-2
+T600-ISZ-STD-ECM-K12-001_7-2
+T600-ISZ_TRY-ECM-K11-003_7-2

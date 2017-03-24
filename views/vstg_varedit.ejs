@@ -1,0 +1,79 @@
+<div id="vstg-varedit-table" style="display: none;">
+<table class="table" >
+    <tbody>
+        <tr>
+            <td >
+                Variable Name
+            </td>
+            <td colspan="5">
+                <input type="text" class="form-control" id="vstg-varedit-table-varname" readonly>
+                <input type="hidden" id="vstg-varedit-add-type" name="type" value=<%= createType.update_param %>>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Min Value
+            </td>
+            <td>
+                <input type="text" class="form-control" id="vstg-varedit-table-minval" name="minValue">
+            </td>
+            <td>
+                Max Value
+            </td>
+            <td>
+                <input type="text" class="form-control" id="vstg-varedit-table-maxval" name="maxValue">
+            </td>
+            <td>
+                E-Level
+            </td>
+            <td>
+                <input type="text" class="form-control" id="vstg-varedit-table-elevel" name="eLevel">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Soft Version
+            </td>
+            <td>
+                <input type="text" class="form-control" id="vstg-varedit-table-softver" name="softVersion">
+            </td>
+            <td>
+                DD Version
+            </td>
+            <td colspan="2">
+                <input type="text" class="form-control" id="vstg-varedit-table-ddver"  name="ddVersion" readonly>
+            </td>
+             <td>
+                <form id="vstg-varedit-table-import_form" enctype="multipart/form-data">
+                <input type="file" id="vstg-varedit-table-import" accept=".xls"> 
+                </form>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="table" id="vstg-varedit-casetable">
+    <thead>
+        <tr class="success">
+            <td>
+                No.    
+            </td>
+            <td colspan="5">
+                Description
+            </td>
+            <td colspan="1">
+                Soft Version
+            </td>
+            <td colspan="1">
+                Select
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<div>
+    <button type="button" class="btn btn-primary" id="vstg-varedit-addcase-button">Add Case</button>
+    <button type="button" class="btn btn-primary" id="vstg-varedit-editvalue-button">Edit Value Setting</button>
+    <button type="button" class="btn btn-primary" id="vstg-varedit-submit-button">Submit</button>
+</div>
+</div>

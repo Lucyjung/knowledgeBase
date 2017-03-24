@@ -1,0 +1,48 @@
+<div id="vstg-component" style="display: none;">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="vstg-header">
+                VSTG - Variable Setting Test Guideline
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row"  id="vstg-button-group-component">
+                <div class="col-xs-4">
+                    <input type="text" class="form-control" id="vstg-search-box">
+                </div>
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-default" id="vstg-search-button">
+                        Search
+                    </button>  
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px">
+                <div class="col-xs-1">
+
+                </div>
+                <div class="btn-group-vertical" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default" id="vstg-add-button">Add</button>
+                    <button type="button" class="btn btn-default" id="vstg-edit-button">Edit</button>
+                    <button type="button" class="btn btn-default" id="vstg-delete-button">Delete</button>
+                    <button type="button" class="btn btn-default" id="vstg-approve-button">Approve
+                        <span class="badge badge-primary" id="vstg-approve-badge">0</span> </button>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <%- include vstg_varinfo.ejs%>
+            <%- include vstg_varadd.ejs %>
+            <%- include vstg_varadd2.ejs %>
+            <%- include vstg_varedit.ejs %>
+            <%- include vstg_varedit2.ejs %>
+            <%- include vstg_vardelete.ejs %>
+            <%- include vstg_approve.ejs %>
+            <%- include vstg_varapprove.ejs %>
+        </div>
+    </div>
+    
+</div>

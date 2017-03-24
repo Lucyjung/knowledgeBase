@@ -1,0 +1,9 @@
+eng_rpm
+exh_relay_control_status
+sw_clutch
+trq_brk_exb
+<CMD List>
+K_OBD_DEF_DPF
+K_TYPE_BATTERY
+K2_CRS_TIPDWN_ACC
+K2_CRS_TIPDWN_ACC2

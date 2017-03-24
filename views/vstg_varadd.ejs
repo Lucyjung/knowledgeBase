@@ -1,0 +1,72 @@
+<table class="table" id="vstg-varadd-table" style="display: none;">
+    <tbody>
+        <tr>
+            <td >
+                Variable Name
+            </td>
+            <td colspan="5">
+                <input type="text" class="form-control" id="vstg-varadd-table-varname" name="name" required>
+                <input type="hidden" id="vstg-varadd-add-type" name="type" value=<%= createType.new %>>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Min Value
+            </td>
+            <td>
+                <input type="number" class="form-control" id="vstg-varadd-table-minval" name="minValue" required>
+            </td>
+            <td>
+                Max Value
+            </td>
+            <td>
+                <input type="number" class="form-control" id="vstg-varadd-table-maxval" name="maxValue" required>
+            </td>
+            <td>
+                E-Level
+            </td>
+            <td>
+                <input type="text" class="form-control" id="vstg-varadd-table-elevel" name="eLevel" required>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Soft Version
+            </td>
+            <td>
+                <input type="text" class="form-control" id="vstg-varadd-table-softver" name="softVersion" required>
+            </td>
+            <td>
+                DD Version
+            </td>
+            <td colspan="2">
+                <input type="text" class="form-control" id="vstg-varadd-table-ddver" name="ddVersion" readonly>
+            </td>
+            <td>
+                <form id="vstg-varadd-table-import_form" enctype="multipart/form-data">
+                <input type="file" id="vstg-varadd-table-import" accept=".xls"> 
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                <dl>
+                    <dt>
+                        Case Description
+                    </dt>
+                    <textarea class="form-control" rows="5" id="vstg-varadd-table-comment" name="description" required></textarea>
+                </dl>
+            </td>
+        </tr>
+        
+    </tbody>
+    <tfoot align="center">
+        <tr>
+            <td colspan="6">
+                <button type="button" class="btn btn-default" id="vstg-varadd-table-add">
+                        Add
+                </button>  
+            </td>
+        </tr>
+    </tfoot>
+</table>
