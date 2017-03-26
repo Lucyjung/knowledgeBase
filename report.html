@@ -350,9 +350,9 @@ body {
         <ul id="stats">
             <li class="passes">passes: <em>2</em></li>
             <li class="failures">failures: <em>0</em></li>
-            <li class="duration">duration: <em>2.5s</em></li>
+            <li class="duration">duration: <em>8.2s</em></li>
         </ul>
-        <ul id="report"><li class="suite"><h1>UserController</h1><ul><li class="suite"><h1>#login()</h1><ul><li class="test pass slow"><h2>should return json with status true<span class="duration">146ms</span></h2><pre><code>request(sails.hooks.http.app)
+        <ul id="report"><li class="suite"><h1>UserController</h1><ul><li class="suite"><h1>#login()</h1><ul><li class="test pass slow"><h2>should return json with status true<span class="duration">491ms</span></h2><pre><code>request(sails.hooks.http.app)
     .post('/login')
     .send({ username: '0204', password: '1234' })
     .expect(200)
@@ -363,7 +363,7 @@ body {
         &quot;message&quot;: &quot;Login successfully !!&quot;,
         &quot;username&quot;: &quot;0204&quot;,
         &quot;name&quot; : &quot;Narut&quot;
-    }, done);</code></pre></li></ul></li></ul></li><li class="suite"><h1>UserModel</h1><ul><li class="suite"><h1>#attemptLogin()</h1><ul><li class="test pass slow"><h2>should check login function<span class="duration">84ms</span></h2><pre><code>User.attemptLogin({
+    }, done);</code></pre></li></ul></li></ul></li><li class="suite"><h1>UserModel</h1><ul><li class="suite"><h1>#attemptLogin()</h1><ul><li class="test pass slow"><h2>should check login function<span class="duration">85ms</span></h2><pre><code>User.attemptLogin({
     username : &quot;0204&quot;,
     password : &quot;1234&quot;
 },function(err,user){
