@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jasmine Spec Runner</title>
+    <link rel="shortcut icon" type="image/png" href="jasmine/lib/jasmine-2.5.2/jasmine_favicon.png">
+    <link rel="stylesheet" href="jasmine/lib/jasmine-2.5.2/jasmine.css">
+    <script src="jasmine/lib/jasmine-2.5.2/jasmine.js"></script>
+    <script src="jasmine/lib/jasmine-2.5.2/jasmine-html.js"></script>
+    <script src="jasmine/lib/jasmine-2.5.2/boot.js"></script>
+    <script src="assets/js/dependencies/jquery.min.js"></script>
+    <script src="jasmine/lib/jasmine-2.5.2/jasmine-jquery.js"></script>
+    <script src="jasmine/lib/jasmine-2.5.2/ejs.min.js"></script>
+</head>
+<body>
+
+
+<!-- include source files here... -->
+<div style="display: none;">
+    <%- include views/kbs_home.ejs%>
+    <%- include views/vstg.ejs%>
+    <%- include views/welcome.ejs%>
+    <%- include views/admin.ejs%>
+    <%- include views/locals.ejs%>
+</div>
+<script src="assets/js/dependencies/page_util.js"></script>
+<!-- include spec files here... -->
+<script src="spec/test.js"></script>
+
+</body>
+</html>

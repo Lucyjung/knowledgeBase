@@ -53,7 +53,7 @@ module.exports.policies = {
     UserController: {
       '*': 'isAuthenticated',
       login: true,
-      signup: 'isAdmin',
+      signup: true,
       find : 'isAdmin',
       destroy : 'isAdmin',
       resetPassword : 'isAdmin'

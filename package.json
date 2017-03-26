@@ -29,7 +29,9 @@
   },
   "scripts": {
     "debug": "node debug app.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "test_server": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/**/*.test.js --reporter mocha-simple-html-reporter --reporter-options output=report.html",
+    "test_client": "node testServer.js"
   },
   "main": "app.js",
   "repository": {
@@ -37,5 +39,18 @@
     "url": "git://github.com/anonymous node/sails user/knowledgeBase01.git"
   },
   "author": "anonymous node/sails user",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "express": "^4.15.2",
+    "grunt-mocha-istanbul": "^5.0.2",
+    "jasmine": "^2.5.3",
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.5.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-jasmine": "^1.1.0",
+    "mocha-simple-html-reporter": "^1.0.1",
+    "sinon": "^2.1.0",
+    "supertest": "^3.0.0"
+  }
 }
