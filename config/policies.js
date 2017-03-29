@@ -62,7 +62,8 @@ module.exports.policies = {
       '*': 'isAuthenticated',
       approve : 'isAdmin',
       reject : 'isAdmin',
-      destroy : 'isAdmin'
+      destroy : 'isAdmin',
+      findAll : true
     },
     XlsController: {
       '*': 'isAuthenticated',

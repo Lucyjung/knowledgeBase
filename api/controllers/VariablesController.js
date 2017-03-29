@@ -271,6 +271,53 @@ module.exports = {
                   });
             }
         });
-    }
+    },
+    findAll : function(req, res) {
+        var query_data = {
+            where : {status : true},
+            select: ['name','revision','case','updatedAt'],
+            sort: 'revision DESC'
+        };
+        Variables.find(query_data).exec(function (err, records){
+            if (err){
+                return res.json({
+                  status : false,
+                  message: 'Database connection error'
+                });
+            }
+            else 
+            {
+                var unique_record = [];
+                var name_list = [];
+                var results = [];
+                var completedCnt = 0;
+                records.forEach(function( value) {
+                    if (name_list.indexOf(value.name)==-1) {
+                        name_list.push(value.name);
+                        unique_record.push(value);
+                    }
+                });
+                var len = unique_record.length;
+                unique_record.forEach(function( value) {
+                    Case.count({id:value.case, status : true}).exec(function countCB(error, found) {
+                        var result = [value.name , 
+                                    value.revision , 
+                                    found , 
+                                    value.updatedAt
+                        ];
+                        results.push(result);
+                        completedCnt++;
+                        if (len == completedCnt){
+                            return res.json({
+                                status : true,
+                                data: results
+                              });
+                        }
+                      });
+                });
+                
+            }
+        });
+    },
 };
 

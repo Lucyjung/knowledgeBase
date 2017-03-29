@@ -17,6 +17,7 @@ function displayPage(page){
     $('#welcome-footer-component').hide();
     $('#vstg-approve-vartable').hide();
     $('#vstg-varapprove-component').hide();
+    $('#vstg-main-component').hide();
     $('#admin-component').hide();
     $('#admin-member-component').hide();
     
@@ -89,6 +90,9 @@ function displayPage(page){
         }
         else if (page == 'vstg-varapprove'){
             $('#vstg-varapprove-component').show();
+        }
+        else if (page == 'vstg-main'){
+            $('#vstg-main-component').show();
         }
     }
     

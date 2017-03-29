@@ -1,3 +1,4 @@
+var table = '';
 function login(){
     var loginData = {};
     getFormData('login-form',loginData);
@@ -620,3 +621,8 @@ function checkSearchValue(){
     }
     return true;
 }
+function clickFromTable(elmnt){
+    $('#vstg-search-box').val($(elmnt).text());
+    populateVariableInfo();
+}
+

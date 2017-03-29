@@ -37,7 +37,8 @@ module.exports.routes = {
     locals : {
         createType : locals.createType,
         userRole : locals.userRole
-    }
+    },
+
   },
 
   /***************************************************************************
@@ -67,6 +68,7 @@ module.exports.routes = {
   //variable endpoint
   'post /variables': 'VariablesController.create',
   'get /variables': 'VariablesController.find',
+  'get /variables/findAll': 'VariablesController.findAll',
   'get /variables/unApprove': 'VariablesController.findUnapprove',
   'post /variables/approve': 'VariablesController.approve',
   'post /variables/reject': 'VariablesController.reject',

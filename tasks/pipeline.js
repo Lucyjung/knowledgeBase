@@ -31,6 +31,7 @@ var jsFilesToInject = [
   'js/dependencies/jquery.min.js',
   'js/dependencies/bootstrap.min.js',
   'js/dependencies/bootstrap-dialog.min.js',
+  'js/dependencies/datatables.js',
   'js/dependencies/ajax_util.js',
   'js/dependencies/page_util.js',
   'js/dependencies/form-util.js',

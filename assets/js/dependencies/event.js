@@ -4,7 +4,7 @@ $('#login-button').on("click",function(){
 
 $('#vstg-tab').on("click",function(){
     updateApproveBadge();
-    displayPage('vstg');
+    displayPage('vstg-main');
 });
 
 $('#admin-tab').on("click",function(){
@@ -341,7 +341,24 @@ $(document).ready( function() {
 
     $("#imgInp").change(function(){
         readURL(this);
-    }); 	
+    }); 
+
+    $('#vstg-main-table').DataTable({
+        ajax: {
+            url : "/variables/findAll"
+        },
+        "aoColumnDefs": [ {
+              "aTargets": [0],
+              "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                  $(nTd).html('<a href="javascript:void(0);"\><p onclick="clickFromTable(this)">'+sData+ '</p> </a>'); 
+              }
+            } ],
+        dom: 'Alfrtip',
+        alphabetSearch: {
+           column: 0 
+        },
+        "destroy": true
+   });
 });
      
 $('#admin-member-confirm-delete').on("click",function(){
