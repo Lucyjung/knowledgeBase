@@ -66,7 +66,57 @@
     </tbody>
 </table>
 <div>
-    <button type="button" class="btn btn-primary" id="vstg-vardelete-case-button">Delete</button>
-    <button type="button" class="btn btn-primary" id="vstg-vardelete-all-button">Delete All</button>
+    <a href="#delete-case-modal" data-toggle="modal"><button type="button" class="btn btn-primary">Delete</button></a>
+    <a href="#delete-all-modal" data-toggle="modal"><button type="button" class="btn btn-primary">Delete All</button></a>
 </div>
+</div>
+<div class="modal fade" id="delete-case-modal" role="dialog" aria-labelledby="DeleteCase_ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+                <h4 class="modal-title" id="DeleteUser_ModalLabel">
+                    Confirm to Delete 
+                </h4>
+            </div>
+            <div class="modal-body">
+                Do you want to delete this case?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="vstg-vardelete-case-button">
+                    Delete
+                </button> 
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Close
+                </button> 	
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="delete-all-modal" role="dialog" aria-labelledby="DeleteAll_ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+                <h4 class="modal-title" id="DeleteUser_ModalLabel">
+                    Confirm to Delete 
+                </h4>
+            </div>
+            <div class="modal-body">
+                Do you want to delete this variable?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="vstg-vardelete-all-button">
+                    Delete
+                </button> 
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Close
+                </button> 	
+            </div>
+        </div>
+    </div>
 </div>

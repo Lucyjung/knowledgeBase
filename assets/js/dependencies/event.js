@@ -48,7 +48,18 @@ $('#vstg-varadd-table-add').on("click",function(){
             reportDialog('warn','Field is required',msg);
         }
         else{
-            displayPage('vstg-add2');
+            var query_data = {
+                name : $('#vstg-varadd-table-varname').val()
+            };
+            ajaxGet('variables',query_data,function(data){
+                
+                if (data.status){
+                    reportDialog('error','Add variable','Duplicate variables');  
+                }else{
+                    displayPage('vstg-add2');
+                }
+            });
+            
         }
     });
 });
@@ -189,6 +200,7 @@ $('#vstg-vardelete-case-button').on("click",function(){
         else{
             reportDialog('error','Variable Deletion',data.message); 
         }
+        $('#delete-case-modal').modal('hide');
     });    
 });
 
@@ -204,6 +216,7 @@ $('#vstg-vardelete-all-button').on("click",function(){
         else{
             reportDialog('error','Variable Deletion',data.message); 
         }
+        $('#delete-all-modal').modal('hide');
     });    
 });
 
@@ -227,7 +240,6 @@ $('#user-change-avatar-confirm-button').on("click",function(){
             }
         }); 
     });
-    
 });
 
 $('#user-change-pass-button').on("click",function(){
@@ -260,20 +272,7 @@ $('#user-change-pass-confirm').on("click",function(){
 });
 
 $('#user-logout-button').on("click",function(){
-    var formData = {};
-    ajaxPost('logout',formData, function(data){
-        if (data.status){
-            reportDialog('success','Logout',data.message); 
-            $('#nav-tab-vstg').hide();
-            $('#nav-tab-admin').hide();
-            $('#user-span').html('');
-            displayPage('home'); 
-        }
-        else{
-            reportDialog('error','Logout',data.message); 
-        }
-    }); 
-      
+    logout();      
 });
 
 $('#vstg-approve-button').on("click",function(){

@@ -13,8 +13,8 @@ app.get('/', function(req, res){
             delete : 'DELETE'
         },
         userRole : {
-            user : 'USER',
-            admin : 'ADMIN'
+            user : 'ROLE-USER',
+            admin : 'ROLE-ADMIN'
         }
     });
 });

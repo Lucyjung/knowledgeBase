@@ -16,6 +16,21 @@ function login(){
         }
     });
 }
+function logout(){
+    var formData = {};
+    ajaxPost('logout',formData, function(data){
+        if (data.status){
+            reportDialog('success','Logout',data.message); 
+            $('#nav-tab-vstg').hide();
+            $('#nav-tab-admin').hide();
+            $('#user-span').html('');
+            displayPage('home'); 
+        }
+        else{
+            reportDialog('error','Logout',data.message); 
+        }
+    }); 
+}
 
 function addVariable(){
 
@@ -39,7 +54,7 @@ function addVariable(){
                 }
                 else
                 {
-                    reportDialog('warn','Variable not found',data.message); 
+                    reportDialog('warn','Variable not found','Variable name is required'); 
                 }
             });
         }
@@ -58,7 +73,7 @@ function editVariable(){
     
             getVariableData('varedit',dataToAdd, function(){
                 dataToAdd['targetedCase'] = $('#vstg-varedit-casetable').find('input[name="optradio"]:checked').val();
-                dataToAdd['case']['description'] = $('#vstg-varedit-casetable').find('input[name="optradio"]:checked').data("info").description;
+				dataToAdd['case']['description'] = $('#vstg-varedit-casetable').find('input[name="optradio"]:checked').data("info").description;
                 if (dataToAdd.name != ""){
                     ajaxPost('variables',dataToAdd, function(data){
                         if (data.status){
@@ -73,7 +88,7 @@ function editVariable(){
                 }
                 else
                 {
-                    reportDialog('warn','Variable name error','Invalid name'); 
+                    reportDialog('warn','Variable not found','Variable name is required'); 
                 }
             });
         }
@@ -128,7 +143,6 @@ function clickToInfo2(){
 function clickToVarApprove(){
     var case_info = $(this).data("info");
     var param = case_info.param;
-    console.log(case_info);
     $('#vstg-varapprove-table-varname').val(case_info.name);
     $('#vstg-varapprove-table-comment').val(case_info.description);
     $('#vstg-varapprove-csv-button').attr('href', 'csv/' +case_info.setupFileName);
@@ -279,7 +293,7 @@ function getParamSetupFileName (pageName, caseData, callback)
 function checkRequiredField (obj, callback)
 {
     var isThereEmptyField = false;
-    $(obj).find('input,textarea,select').filter('[required]:visible').each(function () {
+    $(obj).find('input,textarea,select').filter('[required]').each(function () {
         if (this.value == '')
         {
             isThereEmptyField = true;
@@ -288,7 +302,7 @@ function checkRequiredField (obj, callback)
             return false;
         }
     }).promise()
-    .done(function(){
+    .done(function(){	
         if (isThereEmptyField == false){
             callback(true);
         }
@@ -485,7 +499,7 @@ function populateVariableInfo(){
                 }
                 displayPage('vstg-info');
             }else{
-                reportDialog('error','Variable search','No case available'); 
+                reportDialog('error','Variable search','There is no case for this variable. You may need to check with Admin'); 
             }
             
         }
@@ -507,12 +521,12 @@ function approveAction(){
     }
     ajaxPost('variables/approve',postData, function(data){
         if (data.status){
-            reportDialog('success','Variable creation',data.message); 
+            reportDialog('success','Variable approval',data.message); 
             // TODO: clean up
             displayPage('vstg');
         }
         else{
-            reportDialog('error','Variable creation',data.message); 
+            reportDialog('error','Variable approval',data.message); 
         }
         updateApproveBadge();
     });

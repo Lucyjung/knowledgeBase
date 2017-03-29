@@ -5,27 +5,40 @@
     <title>Jasmine Spec Runner</title>
     <link rel="shortcut icon" type="image/png" href="jasmine/lib/jasmine-2.5.2/jasmine_favicon.png">
     <link rel="stylesheet" href="jasmine/lib/jasmine-2.5.2/jasmine.css">
+    <link rel="stylesheet" href="assets/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/styles/bootstrap-dialog.min.css">
+    
     <script src="jasmine/lib/jasmine-2.5.2/jasmine.js"></script>
     <script src="jasmine/lib/jasmine-2.5.2/jasmine-html.js"></script>
     <script src="jasmine/lib/jasmine-2.5.2/boot.js"></script>
     <script src="assets/js/dependencies/jquery.min.js"></script>
+    <script src="assets/js/dependencies/bootstrap.min.js"></script>
+    <script src="assets/js/dependencies/bootstrap-dialog.min.js"></script>
     <script src="jasmine/lib/jasmine-2.5.2/jasmine-jquery.js"></script>
+    <script src="jasmine/lib/jasmine-2.5.2/mock-ajax.js"></script>
     <script src="jasmine/lib/jasmine-2.5.2/ejs.min.js"></script>
+    <script src="spec/helper/ajaxResponses.js"></script>
+    <script src="spec/helper/html.js"></script>
 </head>
 <body>
 
 
 <!-- include source files here... -->
 <div style="display: none;">
-    <%- include views/kbs_home.ejs%>
-    <%- include views/vstg.ejs%>
-    <%- include views/welcome.ejs%>
-    <%- include views/admin.ejs%>
-    <%- include views/locals.ejs%>
+    <%- include views/homepage.ejs%>
+    <%- include spec/test_form/form.ejs%>
 </div>
+<script src="assets/js/dependencies/ajax_util.js"></script>
 <script src="assets/js/dependencies/page_util.js"></script>
+<script src="assets/js/dependencies/form_util.js"></script>
+<script src="assets/js/dependencies/scripts.js"></script>
+<script src="assets/js/dependencies/event.js"></script>
 <!-- include spec files here... -->
-<script src="spec/test.js"></script>
+<script src="spec/ajax_util.spec.js"></script>
+<script src="spec/page_util.spec.js"></script>
+<script src="spec/form_util.spec.js"></script>
+<script src="spec/event.spec.js"></script>
+<script src="spec/scripts.spec.js"></script>
 
 </body>
 </html>

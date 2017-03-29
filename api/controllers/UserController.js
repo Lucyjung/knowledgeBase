@@ -51,31 +51,42 @@ module.exports = {
               message: 'Username and name are required'
         });
     }
-    req.body.password = sails.config.defaultPassword
-    // Attempt to signup a user using the provided parameters
-    
-    User.signup(req.body, function (err, user) {
-      // res.negotiate() will determine if this is a validation error
-      // or some kind of unexpected server error, then call `res.badRequest()`
-      // or `res.serverError()` accordingly.
-      if (err) {
-          return res.json({
-              status : false,
-              message: err
+    User.findOne({
+        username: req.body.username
+    }).exec(function (err, foundUser){
+        if (err || foundUser){
+            return res.json({
+                status : false,
+                message: 'User already exist'
             });
-      }
-        
+        }
+        req.body.password = sails.config.defaultPassword;
+        // Attempt to signup a user using the provided parameters
+    
+        User.signup(req.body, function (err, user) {
+            // res.negotiate() will determine if this is a validation error
+            // or some kind of unexpected server error, then call `res.badRequest()`
+            // or `res.serverError()` accordingly.
+            if (err) {
+                return res.json({
+                    status : false,
+                    message: err
+                  });
+            }
 
-      // Go ahead and log this user in as well.
-      // We do this by "remembering" the user in the session.
-      // Subsequent requests from this user agent will have `req.session.me` set.
-      req.session.me = user.id;
 
-      return res.json({
-            status : true,
-            message: 'Sign up successfully',
-	  });
+            // Go ahead and log this user in as well.
+            // We do this by "remembering" the user in the session.
+            // Subsequent requests from this user agent will have `req.session.me` set.
+            req.session.me = user.id;
+
+            return res.json({
+                  status : true,
+                  message: 'Sign up successfully',
+                });
+        });
     });
+    
   },
   changePass: function (req, res) {
 

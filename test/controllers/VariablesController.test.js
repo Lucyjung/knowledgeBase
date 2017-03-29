@@ -21,6 +21,7 @@ var testCase = {
     },
     "setupFileName" : "440e1aec-2181-44a1-abb4-2451e023fdac.csv"
 };
+
 var unApproveCaseCnt = 0 ;
 var unApproveID;
 var updatedTestCase = {
@@ -126,11 +127,77 @@ describe('VariablesController', function() {
 
             authenticated
                 .post('/variables/approve')
-                .send({id:unApproveID })
+                .send({case_id:unApproveID })
                 .expect(200)
                 .expect({
                     "status" : true,
                     "message": 'Variable has been completely approved'
+                }, done);
+        });
+    });
+    describe('#create() (edit param)', function() {
+        
+        it('should update a case', function (done) {
+
+            authenticated
+                .post('/variables')
+                .send({
+                    name : varName,
+                    case : updatedTestCase ,
+                    type : sails.config.createType.update_param
+                })
+                .expect(200)
+                .expect({
+                    "status" : true,
+                    "message": 'Variable ' + varName + ' has been successfuly updated'
+                }, done);
+        });
+    });
+    describe('#reject', function() {
+        
+        it('should reject a case', function (done) {
+
+            authenticated
+                .get('/variables/unApprove')
+                .send()
+                .expect(200)
+                .end(function(err,res) {
+                    if ('case' in res.body && res.body.case.length > 0){
+                        for (var index in res.body.case){
+                            if (varName == res.body.case[index].name){
+                                unApproveID =  res.body.case[index].id;
+                            } 
+                        }
+                        authenticated
+                        .post('/variables/reject')
+                        .send({case_id:unApproveID })
+                        .expect(200)
+                        .expect({
+                            "status" : true,
+                            "message": 'Variable has been completely rejected'
+                        }, done);
+                    }
+                    else{
+                       done('should have an unapprove case');
+                    }
+
+                  });
+            
+        });
+    });
+    describe('#destroy()', function() {
+        
+        it('should delete a variable', function (done) {
+
+            authenticated
+                .delete('/variables')
+                .send({
+                    name : varName
+                })
+                .expect(200)
+                .expect({
+                    "status" : true,
+                    "message": 'Variable has been completely deleted'
                 }, done);
         });
     });
