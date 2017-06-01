@@ -1,4 +1,4 @@
-var table = '';
+var vstgTbl = '';
 function login(){
     var loginData = {};
     getFormData('login-form',loginData);
@@ -45,8 +45,7 @@ function addVariable(){
                     ajaxPost('variables',dataToAdd, function(data){
                         if (data.status){
                             reportDialog('success','Variable creation',data.message); 
-                            // TODO: clean up
-                            displayPage('vstg');
+                            displayPage('vstg-main');
                         }
                         else{
                             reportDialog('error','Variable creation',data.message); 
@@ -74,13 +73,13 @@ function editVariable(){
     
             getVariableData('varedit',dataToAdd, function(){
                 dataToAdd['targetedCase'] = $('#vstg-varedit-casetable').find('input[name="optradio"]:checked').val();
-				dataToAdd['case']['description'] = $('#vstg-varedit-casetable').find('input[name="optradio"]:checked').data("info").description;
+		dataToAdd['case']['description'] = $('#vstg-varedit2-table-comment').val();
+                dataToAdd['case']['ecmVar'] = document.getElementById('vstg-varedit2-ecm-var').checked;
                 if (dataToAdd.name != ""){
                     ajaxPost('variables',dataToAdd, function(data){
                         if (data.status){
                             reportDialog('success','Variable modification',data.message); 
-                            // TODO: clean up
-                            displayPage('vstg');
+                            displayPage('vstg-main');
                         }
                         else{
                             reportDialog('error','Variable modification',data.message); 
@@ -104,6 +103,14 @@ function backFromAdd2(){
     displayPage('vstg-add');
 };
 
+function backFromEdit2(){
+    displayPage('vstg-edit');
+};
+
+function backFromInfo2(){
+    displayPage('vstg-info');
+};
+
 function clickToInfo2(){
     var case_info = $(this).data("info");
     var param = case_info.param;
@@ -114,30 +121,58 @@ function clickToInfo2(){
     });
     for (var param_name in param){
         var toAppend = '';
+        var isKeyCheckedHtml = '';
+        if (param[param_name].isKey == "true"){
+            isKeyCheckedHtml = 'checked';
+        }
+        var isKeyHtml = '<td><input type="checkbox" name="isKey" disabled ' + isKeyCheckedHtml +  '></td>';
         if (param[param_name].type == 'RxM')
         {
             toAppend = '' +
             '<tr>' +
             '<td>' + param_name + '</td>' +
+            isKeyHtml + 
             '<td>' + param[param_name].before + '</td>'+
             '<td>' + param[param_name].after + '</td>'+
             '</tr>';
             $('#vstg-varinfo-vartable > tbody:last-child').append(toAppend );
         }
         else{ // MAP
-            toAppend = '' +
-            '<tr>' +
-            '<td>' + param_name + '</td>' +
-            '<td>' + '</td>'+
-            '<td>' + 
-            '<a href="'+ 'csv/' +param[param_name].fileName+'" download="' +param_name +'.csv"' +'>' + 
-            '<button type="submit" class="btn btn-default" >Export</button>' + '</td>'+
-            '</a>' + 
-            '</tr>';
-            $('#vstg-varinfo-vartable > tbody:last-child').append(toAppend );
+            if (param[param_name].begin !== undefined && param[param_name].end !== undefined){
+                toAppend = '' +
+                '<tr>' +
+                '<td>' + param_name + '</td>' +
+                isKeyHtml +
+                '<td>' + param[param_name].begin + '</td>'+
+                '<td>' + param[param_name].end + '</td>'+
+                '</tr>';
+                $('#vstg-varinfo-vartable > tbody:last-child').append(toAppend );
+            }
+            else
+            {
+                toAppend = '' +
+                '<tr>' +
+                '<td>' + param_name + '</td>' +
+                isKeyHtml + 
+                '<td>' + '</td>'+
+                '<td>' + 
+                '<a href="'+ 'csv/' +param[param_name].fileName+'" download="' +param_name +'.csv"' +'>' + 
+                '<button type="submit" class="btn btn-default" >Export</button>' + '</td>'+
+                '</a>' + 
+                '</tr>';
+                $('#vstg-varinfo-vartable > tbody:last-child').append(toAppend );
+            }
+            
         }
         
     }
+    var backButtonId = "vstg-varinfo2-button-back";
+        var toAddButton  = '<tr>' +
+            '<td><button type="button" class="btn btn-default" id="' + backButtonId + '">Back</button></td>' + 
+            '</tr>';
+        $('#vstg-varinfo-vartable > tbody:last-child').append(toAddButton);
+
+        document.getElementById(backButtonId).onclick = backFromInfo2;
     displayPage('vstg-info2');
 }
 
@@ -149,31 +184,53 @@ function clickToVarApprove(){
     $('#vstg-varapprove-csv-button').attr('href', 'csv/' +case_info.setupFileName);
     $('#vstg-varapprove-csv-button').attr('download', 'csv/' +case_info.name+'.csv');
     populateDataInfo('varapprove',case_info);
+    $('#vstg-varapprove-table-request').val(case_info.owner_name);
+    
     $('#vstg-varapprove-vartable > tbody').children().each(function(){
         this.remove();
     });
     for (var param_name in param){
         var toAppend = '';
+        var isKeyCheckedHtml = '';
+        if (param[param_name].isKey == "true"){
+            isKeyCheckedHtml = 'checked';
+        }
+        var isKeyHtml = '<td><input type="checkbox" name="isKey" disabled ' +isKeyCheckedHtml+ '></td>';
         if (param[param_name].type == 'RxM')
         {
             toAppend = '' +
             '<tr>' +
             '<td>' + param_name + '</td>' +
+            isKeyHtml + 
             '<td>' + param[param_name].before + '</td>'+
             '<td>' + param[param_name].after + '</td>'+
             '</tr>';
             $('#vstg-varapprove-vartable > tbody:last-child').append(toAppend );
         }
         else{ // MAP
-            toAppend = '' +
-            '<tr>' +
-            '<td>' + param_name + '</td>' +
-            '<td>' + '</td>'+
-            '<td>' + 
-            '<a href="'+ 'csv/' +param[param_name].fileName+'" download="' +param_name +'.csv"' +'>' + 
-            '<button type="submit" class="btn btn-default" >Export</button>' + '</td>'+
-            '</a>' + 
-            '</tr>';
+            if (param[param_name].begin !== undefined && param[param_name].end !== undefined){
+                toAppend = '' +
+                '<tr>' +
+                '<td>' + param_name + '</td>' +
+                isKeyHtml + 
+                '<td>' + param[param_name].begin + '</td>'+
+                '<td>' + param[param_name].end + '</td>'+
+                '</tr>';
+            }
+            else{
+                toAppend = '' +
+                '<tr>' +
+                '<td>' + param_name + '</td>' +
+                isKeyHtml + 
+                '<td>' + '</td>'+
+                '<td>' + 
+                '<a href="'+ 'csv/' +param[param_name].fileName+'" download="' +param_name +'.csv"' +'>' + 
+                '<button type="submit" class="btn btn-default" >Export</button>' + '</td>'+
+                '</a>' + 
+                '</tr>';
+            }
+            
+            
             $('#vstg-varapprove-vartable > tbody:last-child').append(toAppend );
         }
         
@@ -181,8 +238,8 @@ function clickToVarApprove(){
     var approveButtonId = 'vstg-varapprove-table-approve';
     var rejectButtonId = 'vstg-varapprove-table-reject';
     var toAddButton  = '<tr>' +
-              '<td><button type="button" class="btn btn-default" id="' + approveButtonId + '">Approve </button></td>' + 
-              '<td><button type="button" class="btn btn-default" id="' + rejectButtonId + '">Reject </button></td>' + 
+              '<td><button type="button" class="btn btn-default" id="' + approveButtonId + '">Approve </button>' + 
+              '<button type="button" class="btn btn-default" style="margin-left:10px;" id="' + rejectButtonId + '">Reject </button></td>' +
               '</tr>';
     $('#vstg-varapprove-vartable > tbody:last-child').append(toAddButton );
     $('#'+approveButtonId).data("case_id",case_info.id);
@@ -221,7 +278,7 @@ function getVariableData(pageName, formData, callback){
             getFormDataByObj(this,formData['case']['param'][paramName] );
 
         });
-        if (len > 1)
+        if (len >= 1)
         {
             $set_file.each(function (index) {
                 if (this.value == ''){
@@ -329,31 +386,51 @@ function radioClickEvent ()
 }
 function populateHtmlForParamTable(isRxM,name,variable ){
     var populatedHtmlCode = '';
+    var isKeyCheckedHtml = '';
+    if (variable.isKey == "true"){
+        isKeyCheckedHtml = 'checked';
+    }
+    var isKeyHtml = '<td><input type="checkbox" name="isKey" ' +isKeyCheckedHtml+ '></td>';
     if (isRxM==false)
     {
-        var htmlExportButton = '';
-        if (variable.fileName){
-            htmlExportButton = '<td><a href="'+ 'csv/' +variable.fileName+'" download="' +name +'.csv"' +'>' + 
-            '<button type="submit" class="btn btn-default" >Export</button>' + '</td>'+
-            '</a>'; 
+        if (variable.begin !== undefined && variable.end !== undefined){
+            populatedHtmlCode = '' +
+            '<tr class="clickable-row" data-value="' + name + '">' +
+            '<td>' + name + 
+            '<input type="hidden" class="form-control" name="type" value="MAP"' +
+            '</td>' +
+            isKeyHtml +
+            '<td><input type="text" class="form-control" placeholder="Before" name="begin" value="'+variable.begin+'"  required>' + '</td>' +
+            '<td><input type="text" class="form-control" placeholder="After" name="end" value="'+variable.end+'" required>' + '</td>' +
+            '</tr>';
         }
-        populatedHtmlCode = '' +
-          '<tr data-value="' + name + '">' +
-          '<td>' + name + 
-          '<input type="hidden" class="form-control" name="type" value="MAP"></td>' +
-          htmlExportButton + 
-          '<td><input type="file" name="' + name +'" data-fileName="'+variable.fileName +'">' + 
-          '<input type="hidden" class="form-control" name="fileName" value="'+ variable.fileName +'"></td>' +
-          '</td>' +
-          '</tr>';
-          }
+        else{
+            var htmlExportButton = '';
+            if (variable.fileName){
+                htmlExportButton = '<td><a href="'+ 'csv/' +variable.fileName+'" download="' +name +'.csv"' +'>' + 
+                '<button type="submit" class="btn btn-default" >Export</button>' + '</td>'+
+                '</a>'; 
+            }
+            populatedHtmlCode = '' +
+              '<tr class="clickable-row" data-value="' + name + '">' +
+              '<td>' + name + 
+              '<input type="hidden" class="form-control" name="type" value="MAP"></td>' +
+              isKeyHtml +
+              htmlExportButton + 
+              '<td><input type="file" name="' + name +'" data-fileName="'+variable.fileName +'">' + 
+              '<input type="hidden" class="form-control" name="fileName" value="'+ variable.fileName +'"></td>' +
+              '</td>' +
+              '</tr>';
+        }
+    }    
     else
     {
         populatedHtmlCode = '' +
-          '<tr data-value="' + name + '">' +
+          '<tr class="clickable-row" data-value="' + name + '">' +
           '<td>' + name + 
           '<input type="hidden" class="form-control" name="type" value="RxM"' +
           '</td>' +
+          isKeyHtml +
           '<td><input type="text" class="form-control" placeholder="Before" name="before" value="'+variable.before+'"  required>' + '</td>' +
           '<td><input type="text" class="form-control" placeholder="After" name="after" value="'+variable.after+'" required>' + '</td>' +
           '</tr>';
@@ -370,28 +447,42 @@ function decodeAndPopulateSetupFile(obj, pageName){
     });
     // Read file line by line
     var lines = this.result.split('\n');
+
+    
+
+    
     for(var line = 0; line < lines.length; line++){
         var variable_name = lines[line].trim();
         var toAppend = '';
         if(variable_name == "<CMD List>" || variable_name == ''){
             continue;
         }
-        else if (variable_name.substring(0,2) == 'K2' || variable_name.substring(0,2) == 'K3')
+
+        // validate input file 
+        if (isVarName(variable_name) === false){
+            reportDialog('error','Setup File','Invalid File'); 
+            return;
+        }
+        var isKeyHtml = '<td><input type="checkbox" name="isKey"></td>';
+        if (variable_name.substring(0,2) == 'K2' || variable_name.substring(0,2) == 'K3')
         {
             toAppend = '' +
-              '<tr data-value="' + variable_name + '">' +
+              '<tr class="clickable-row" data-value="' + variable_name + '">' +
               '<td>' + variable_name + 
               '<input type="hidden" class="form-control" name="type" value="MAP"></td>' +
-              '<td><input type="file" name="' + variable_name +'" required>' + '</td>' +
+              isKeyHtml + 
+              '<td><input type="text" class="form-control" placeholder="Begin value" name="begin" required>' + '</td>' +
+              '<td><input type="text" class="form-control" placeholder="End value" name="end" required>' + '</td>' +
               '</tr>';
-              }
+        }
         else
         {
           toAppend = '' +
-              '<tr data-value="' + variable_name + '">' +
+              '<tr class="clickable-row" data-value="' + variable_name + '">' +
               '<td>' + variable_name + 
               '<input type="hidden" class="form-control" name="type" value="RxM"' +
               '</td>' +
+              isKeyHtml + 
               '<td><input type="text" class="form-control" placeholder="Before" name="before" required>' + '</td>' +
               '<td><input type="text" class="form-control" placeholder="After" name="after" required>' + '</td>' +
               '</tr>';
@@ -440,8 +531,9 @@ function populateDataForEditDelete(pageName){
                 var toAppend = '' +
                 '<tr>' +
                 '<td>' + case_no + '</td>' +
-                '<td colspan="5">' + data.variable.case[case_index].description + '</td>'+
+                '<td colspan="5" class="td_whitespace">' + data.variable.case[case_index].description + '</td>'+
                 '<td colspan="1">' + data.variable.case[case_index].softVersion + '</td>'+
+                '<td colspan="1">' + data.variable.case[case_index].owner_name + '</td>'+
                 '<td colspan="1"><div class="radio">' + 
                 '<label><input type="radio" name="optradio" value="' +data.variable.case[case_index].id + '"' +checkedHtml +
                 ' id=vstg-'+pageName+'-casetable-radio'+case_index + '>' + 
@@ -483,20 +575,33 @@ function populateVariableInfo(){
                 for (var case_index in data.variable.case)
                 {
                     var case_no = Number(case_index) + 1;
+                    var csvDetialBtnHtml = '<td>No CSV file</td>';
+                    if (data.variable.case[case_index].ecmVar === undefined || data.variable.case[case_index].ecmVar === false )
+                    {
+                        csvDetialBtnHtml = '<td>' + 
+                        '<a href="'+ 'csv/' +data.variable.case[case_index].setupFileName+'" download="' +data.variable.name + '_case' + case_no + '.csv">' + 
+                        '<button type="submit" class="btn btn-default" id="' + 'vstg-varinfo-casetable-csv-button' + case_index +'">CSV</button>' + '</a>'+
+                        '</td>' + 
+                        '<td>' + '<button type="button" class="btn btn-default" id="' + 'vstg-varinfo-casetable-var-button' + case_index +'">Value Setup</button>' + '</td>'; 
+                        
+                    }
+                    
+            
                     var toAppend = '' +
                     '<tr>' +
                     '<td>' + case_no + '</td>' +
-                    '<td colspan="4">' + data.variable.case[case_index].description + '</td>'+
+                    '<td colspan="4" class="td_whitespace">' + data.variable.case[case_index].description + '</td>'+
                     '<td>' + data.variable.case[case_index].softVersion + '</td>'+
-                    '<td>' + 
-                    '<a href="'+ 'csv/' +data.variable.case[case_index].setupFileName+'" download="' +data.variable.name + '_case' + case_no + '.csv">' + 
-                    '<button type="submit" class="btn btn-default" id="' + 'vstg-varinfo-casetable-csv-button' + case_index +'">CSV</button>' + '</a>'+
-                    '</td>' + 
-                    '<td>' + '<button type="button" class="btn btn-default" id="' + 'vstg-varinfo-casetable-var-button' + case_index +'">Value Setup</button>' + '</td>'+
+                    '<td>' + data.variable.case[case_index].owner_name + '</td>'+
+                    csvDetialBtnHtml +
+                    
                     '</tr>';
                     $('#vstg-varinfo-casetable > tbody:last-child').append(toAppend );
                     $('#vstg-varinfo-casetable-var-button'+case_index).data("info",data.variable.case[case_index]);
-                    document.getElementById('vstg-varinfo-casetable-var-button'+case_index).onclick = clickToInfo2;
+                    if (data.variable.case[case_index].ecmVar === undefined || data.variable.case[case_index].ecmVar === false )
+                    {
+                        document.getElementById('vstg-varinfo-casetable-var-button'+case_index).onclick = clickToInfo2;
+                    }
                 }
                 displayPage('vstg-info');
             }else{
@@ -523,8 +628,7 @@ function approveAction(){
     ajaxPost('variables/approve',postData, function(data){
         if (data.status){
             reportDialog('success','Variable approval',data.message); 
-            // TODO: clean up
-            displayPage('vstg');
+            displayPage('vstg-main'); 
         }
         else{
             reportDialog('error','Variable approval',data.message); 
@@ -539,8 +643,7 @@ function rejectAction(){
     ajaxPost('variables/reject',postData, function(data){
         if (data.status){
             reportDialog('success','Variable creation',data.message); 
-            // TODO: clean up
-            displayPage('vstg');
+            displayPage('vstg-main');
         }
         else{
             reportDialog('error','Variable creation',data.message); 
@@ -625,4 +728,86 @@ function clickFromTable(elmnt){
     $('#vstg-search-box').val($(elmnt).text());
     populateVariableInfo();
 }
+function initTable(){
+	if (vstgTbl == ''){
+        vstgTbl = $('#vstg-main-table').DataTable({
+            ajax: {
+                url : "/variables/findAll"
+            },
+            "aoColumnDefs": [ {
+                "aTargets": [0],
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        $(nTd).html('<a href="javascript:void(0);"\><p onclick="clickFromTable(this)">'+sData+ '</p> </a>'); 
+                }
+              } ],
+            dom: 'Alfrtip',
+            alphabetSearch: {
+               column: 0 
+            },
+            "destroy": true,
+            language: {
+                "search": "Filter:"
+            }
+	   });
+	}
+        else{
+            vstgTbl.ajax.reload();
+        }
+	
+}
+function isVarName(str) {
 
+  if (typeof str !== 'string') {
+    return false;
+  }
+  var patt = new RegExp(",");
+  if(patt.test(str)){
+      return false;
+  }
+  try {
+    new Function('var ' + str)();
+  } catch (e) {
+    return false;
+  }
+  return true;
+};
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+function clearSetupFile(obj, pageName){
+    obj.value = ''
+    $('#vstg-'+pageName+'2-table-value > tbody').children().each(function(){
+      this.remove();
+    });
+}
+function clearVstgAddField(){
+    $('#vstg-varadd-table-varname').val('');
+    $('#vstg-varadd-table-minval').val('');
+    $('#vstg-varadd-table-maxval').val('');
+    $('#vstg-varadd-table-elevel').val('');
+    $('#vstg-varadd-table-softver').val('');
+    $('#vstg-varadd-table-ddver').val('');
+    $('#vstg-varadd-table-comment').val('');
+    $('#vstg-varadd2-table-varname').val('');
+    $('#vstg-varadd2-import-file').val('');
+    $('#vstg-varadd-table-comment').val('');
+    $('#vstg-varadd2-table-value > tbody').children().each(function(){
+      this.remove();
+    });
+    $('#vstg-varadd-ecm-var').attr('checked', false); // Unchecks it
+    
+}
+function toogleHighlightTbl(obj){
+    $(obj).addClass('info').siblings().removeClass('info');
+}

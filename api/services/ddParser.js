@@ -1,13 +1,13 @@
 module.exports = {
     getMinMaxElevel : function (sheet,queryName, callback){
         var columnName = 'C';
-        var rowName = 1;
+        var rowName = 2;
         var cellAddr = columnName + rowName.toString();   
         var minAddr = '';
         var maxAddr = '';
         var eLevelAddr = '';
        
-        for (var row_index = rowName;sheet[cellAddr] !== undefined ;row_index++){
+        for (var row_index = rowName;sheet[cellAddr] != undefined ;row_index++){
             cellAddr  = columnName + row_index.toString();   
             if (sheet[cellAddr] != undefined && sheet[cellAddr].v === queryName)
             {

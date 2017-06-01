@@ -44,6 +44,7 @@ module.exports = function login(inputs) {
         isAdmin = true;
         req.session.admin = true;
     }
+    res.cookie('user', user.id);
 
 
     // Otherwise if this is an HTML-wanting browser, redirect to /.

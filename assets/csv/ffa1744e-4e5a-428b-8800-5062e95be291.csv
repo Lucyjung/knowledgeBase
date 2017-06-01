@@ -1,0 +1,40 @@
+Name,Value,Type
+uwcosyn_eng_rpm,0,unsigned short int
+ad_map,2560,short int
+ad_baro_press,2560,short int
+ad_maf_ave,0,short int
+ad_intake_air_temp,0,short int
+sacq_actual_map_baro_ratio,0,short int
+ad_coolant_temp,0,short int
+obdm_inv_sensor_iat,0,unsigned char
+obdm_inv_sensor_baro,0,unsigned char
+trb_sv_enb_status,0x60009BBE,unsigned char[9]
+trb_sv_enb_status[0],0,unsigned char
+trb_sv_enb_status[1],0,unsigned char
+trb_sv_enb_status[2],0,unsigned char
+trb_sv_enb_status[3],0,unsigned char
+trb_sv_enb_status[4],0,unsigned char
+trb_sv_enb_status[5],0,unsigned char
+trb_sv_enb_status[6],0,unsigned char
+trb_sv_enb_status[7],0,unsigned char
+trb_sv_enb_status[8],0,unsigned char
+trb_sv_ramp_factor,0,unsigned short int
+trb_rhu_act_status,0,unsigned char
+trb_sv_current_mode,0,unsigned char
+trb_sv_prev_mode,0,unsigned char
+trb_crb_act_status,0,unsigned char
+trb_dpf_act_status,0,unsigned char
+trb_sv_converted_mode,0,unsigned short int
+trb_trg_map_old,0,unsigned short int
+trb_trg_map_tmp_filt_old,0,unsigned short int
+trb_trg_map_tmp_old,0,unsigned short int
+trb_trg_pos_fnl_old,0,unsigned short int
+trb_low_comp_press_est,2560,short int
+trb_low_comp_press_est_filt,2560,unsigned short int
+trb_shiftup_bst_keep_mode,0,unsigned char
+trb_egr_pos_onoff_rate,0,unsigned short int
+trb_map_fb_enb,0,unsigned char
+trb_trg_map_tmp_filt,0,unsigned short int
+trb_crb_trg_comp_status,0,unsigned char
+trb_trg_lead_comp,0,short int
+trb_ext_temp_trg_pos_cmp,0,short int

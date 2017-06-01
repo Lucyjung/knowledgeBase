@@ -46,9 +46,11 @@ module.exports = {
             type: 'string',
             required: true
         },
+        ecmVar:{
+            type: 'boolean',
+        },
         param:{
             type: 'json',
-            required: true
         }
     }
 };

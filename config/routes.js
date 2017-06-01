@@ -19,7 +19,6 @@
  * For more information on configuring custom routes, check out:
  * http://sailsjs.org/#!/documentation/concepts/Routes/RouteTargetSyntax.html
  */
-var locals = require('./local');
 module.exports.routes = {
 
   /***************************************************************************
@@ -32,15 +31,8 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {
-    view: 'homepage',
-    locals : {
-        createType : locals.createType,
-        userRole : locals.userRole
-    },
 
-  },
-
+  'get /': 'MainController.index',  
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
@@ -59,6 +51,7 @@ module.exports.routes = {
   'post /user/resetPass': 'UserController.resetPassword',
   'post /user/role': 'UserController.changeRole',
   'get /user/role': 'UserController.role',
+  'get /user/data': 'UserController.data',
   'delete /user' : 'UserController.destroy',
   '/logout': 'UserController.logout',
   
@@ -72,5 +65,6 @@ module.exports.routes = {
   'get /variables/unApprove': 'VariablesController.findUnapprove',
   'post /variables/approve': 'VariablesController.approve',
   'post /variables/reject': 'VariablesController.reject',
-  'delete /variables': 'VariablesController.destroy'
+  'delete /variables': 'VariablesController.destroy',
+  'get /variables/convert': 'VariablesController.convert',
 };

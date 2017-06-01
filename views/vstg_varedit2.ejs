@@ -11,13 +11,36 @@
             </tr>
             <tr>
                 <td>
+                    Flag
+                </td>
+                <td>
+                    <li class="list-group-item">
+                        &nbsp&nbsp This variable can be adjusted by ECM Monitor
+                        <div class="material-switch pull-left">
+                            <input id="vstg-varedit2-ecm-var" name="ecmVar" type="checkbox"/>
+                            <label for="vstg-varedit2-ecm-var" class="label-primary"></label>
+                        </div>
+                    </li>
+                </td>
+            </tr> 
+            <tr>
+                <td>
                     Value Setup File
                 </td>
                 <td colspan="4">
                     <input type="file" id="vstg-varedit2-import-file">
                     <input type="hidden" id="vstg-varedit2-import-fileName" name="setupFileName">
                 </td>
-            </tr>        
+            </tr>
+            <tr>
+                <td>
+                    Description
+                </td>
+                <td>
+                    <textarea class="form-control" rows="5" id="vstg-varedit2-table-comment" name="description" required></textarea>
+                </td>
+            </tr> 
+            
         </tbody>
 
     </table>
@@ -28,10 +51,13 @@
                     Value Name
                 </td>
                 <td >
-                    Before
+                    is Key? 
                 </td>
                 <td >
-                    After
+                    Before/Begin
+                </td>
+                <td >
+                    After/End
                 </td>
             </tr>
         </thead>

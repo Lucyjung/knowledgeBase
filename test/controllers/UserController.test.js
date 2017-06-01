@@ -213,5 +213,9 @@ describe('UserController', function() {
         
         xit('This test has been skipped due to unable to upload file, this TEST will be handle in CT');
     });
+    describe('#data', function() {
+        
+        xit('This test has been skipped due to unable to set cookie, this TEST will be handle in CT');
+    });
  
 });

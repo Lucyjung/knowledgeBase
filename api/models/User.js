@@ -106,6 +106,7 @@ module.exports = {
     })
     .exec(function (err, user){
       if (err) return cb(err);
+      if(user == undefined) return cb(null,user);
       var based = user.password || '';
       var isMatch = bcrypt.compareSync(inputs.password,based );
       if(isMatch)

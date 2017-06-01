@@ -52,9 +52,11 @@ function displayPage(page){
         {
             if(page == 'vstg-add-case'){
                 $('#vstg-varadd-table-varname').prop('readonly', true);
+                $('#vstg-varadd-table-back').show();
                 $('#vstg-varadd-add-type').val($('#local-type-add-case').html());
             }
             else{
+                $('#vstg-varadd-table-back').hide();
                 $('#vstg-varadd-table-varname').prop('readonly', false);
                 $('#vstg-varadd-add-type').val($('#local-type-new').html());
             }
@@ -92,6 +94,7 @@ function displayPage(page){
             $('#vstg-varapprove-component').show();
         }
         else if (page == 'vstg-main'){
+            initTable();
             $('#vstg-main-component').show();
         }
     }

@@ -40,7 +40,7 @@
                 DD Version
             </td>
             <td colspan="2">
-                <input type="text" class="form-control" id="vstg-varadd-table-ddver" name="ddVersion" readonly>
+                <input type="text" class="form-control" id="vstg-varadd-table-ddver" name="ddVersion" readonly required>
             </td>
             <td>
                 <form id="vstg-varadd-table-import_form" enctype="multipart/form-data">
@@ -58,13 +58,27 @@
                 </dl>
             </td>
         </tr>
+        <tr>
+            <td colspan="1">
+                <li class="list-group-item">
+                    This variable can be adjusted by ECM Monitor
+                    <div class="material-switch pull-right">
+                        <input id="vstg-varadd-ecm-var" name="ecmVar" type="checkbox"/>
+                        <label for="vstg-varadd-ecm-var" class="label-primary"></label>
+                    </div>
+                </li>
+            </td>
+        </tr>
         
     </tbody>
     <tfoot align="center">
         <tr>
             <td colspan="6">
                 <button type="button" class="btn btn-default" id="vstg-varadd-table-add">
-                        Add
+                    Add
+                </button>  
+                <button type="button" class="btn btn-default" id="vstg-varadd-table-back" style="display: none;">
+                    Back
                 </button>  
             </td>
         </tr>

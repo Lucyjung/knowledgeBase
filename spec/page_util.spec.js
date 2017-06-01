@@ -2,7 +2,25 @@ describe("Page Utility Testing Suite", function() {
     
     it("should not display any page", function() {
         displayPage('');
-        expect($('#welcome-component')).toBeHidden();
+        expect($('#welcome-component').css("display")).toEqual('none');
+        expect($('#vstg-component').css("display")).toEqual('none');
+        expect($('#vstg-varinfo-table').css("display")).toEqual('none');
+        expect($('#vstg-varinfo-casetable').css("display")).toEqual('none');
+        expect($('#vstg-varinfo-vartable').css("display")).toEqual('none');
+        expect($('#vstg-varadd-table').css("display")).toEqual('none');
+        expect($('#vstg-varadd2-table').css("display")).toEqual('none');
+        expect($('#kbs-home-component').css("display")).toEqual('none'); 
+        expect($('#vstg-varedit-table').css("display")).toEqual('none');  
+        expect($('#vstg-varedit2-table').css("display")).toEqual('none'); 
+        expect($('#vstg-vardelete-table').css("display")).toEqual('none'); 
+        expect($('#change-avatar-component').css("display")).toEqual('none'); 
+        expect($('#change-pass-component').css("display")).toEqual('none'); 
+        expect($('#welcome-footer-component').css("display")).toEqual('none');
+        expect($('#vstg-approve-vartable').css("display")).toEqual('none');
+        expect($('#vstg-varapprove-component').css("display")).toEqual('none');
+        expect($('#vstg-main-component').css("display")).toEqual('none');
+        expect($('#admin-component').css("display")).toEqual('none');
+        expect($('#admin-member-component').css("display")).toEqual('none');
     });
     it("should display user page", function() {
         displayPage('user');
@@ -97,12 +115,11 @@ describe("Page Utility Testing Suite", function() {
        displayPage('vstg-varapprove');
         expect($('#vstg-varapprove-component').css("display")).not.toEqual('none');
     });
-
-    // Test Dialog should be the last 
-//    it("should display a dialog", function() {
-//        reportDialog('success','test Title', 'Test content');
-//        expect($('.modal bootstrap-dialog').css("display")).not.toEqual('none');
-//    });
+    it("should display vstg main page", function() {
+        spyOn(window, 'initTable').and.callFake(function() { });
+        displayPage('vstg-main');
+        expect($('#vstg-main-component').css("display")).not.toEqual('none');
+    });
 
 });
 describe("Test Admin based Component", function() {

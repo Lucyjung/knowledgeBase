@@ -1,21 +1,30 @@
 describe("Event Trigger Test Suite", function() {
     beforeEach(function() {
         jasmine.Ajax.install();
+        $('#loadingDiv').modal('hide');
     });
     afterEach(function() {
         jasmine.Ajax.uninstall();
     });
     it("After click login button - Should call login function after login button get clicked", function() {
-        spyOn(window, 'login').and.callThrough();
+        spyOn(window, 'login').and.callFake(function() { });
          $('#login-button').trigger('click');
+        expect(login).toHaveBeenCalled();
+    });
+    it("After press Enter Key - Should call login function", function() {
+        spyOn(window, 'login').and.callFake(function() { });
+        var e = jQuery.Event("keyup");
+        e.keyCode = 13;
+            
+        $('#inputPassword').trigger(e);
         expect(login).toHaveBeenCalled();
     });
     it("After click vstg tab - Should call update approve badge function and call function to display VSTG page", function() {
         spyOn(window, 'updateApproveBadge').and.callThrough();
-        spyOn(window, 'displayPage').and.callThrough();
+        spyOn(window, 'displayPage').and.callFake(function() { });
          $('#vstg-tab').trigger('click');
         expect(updateApproveBadge).toHaveBeenCalled();
-        expect(displayPage).toHaveBeenCalledWith('vstg');
+        expect(displayPage).toHaveBeenCalledWith('vstg-main');
     });
     it("After click admin tab - Should call function to display member page", function() {
         spyOn(window, 'showMemberPage').and.callThrough();
@@ -258,7 +267,7 @@ describe("Event Trigger Test Suite", function() {
             
         $('#vstg-varedit-submit-button').trigger('click');
         expect(getFormData).toHaveBeenCalled();  
-        expect(displayPage).toHaveBeenCalledWith('vstg');   
+        expect(displayPage).toHaveBeenCalledWith('vstg-main');   
         expect(reportDialog).toHaveBeenCalledWith('success','Variable creation',postRetValue.message);     
     });
     it("After click submit button at EDIT PAGE -> call AJAX POST (fail) -> report error", function() {
@@ -289,7 +298,7 @@ describe("Event Trigger Test Suite", function() {
         });
             
         $('#vstg-vardelete-case-button').trigger('click');
-        expect(displayPage).toHaveBeenCalledWith('vstg');   
+        expect(displayPage).toHaveBeenCalledWith('vstg-main');   
         expect(reportDialog).toHaveBeenCalledWith('success','Variable Deletion',postRetValue.message);     
     });
     it("After click delete case button at DELETE PAGE -> call AJAX POST (fail) -> report error", function() {
@@ -318,7 +327,7 @@ describe("Event Trigger Test Suite", function() {
         });
             
         $('#vstg-vardelete-all-button').trigger('click');
-        expect(displayPage).toHaveBeenCalledWith('vstg');   
+        expect(displayPage).toHaveBeenCalledWith('vstg-main');   
         expect(reportDialog).toHaveBeenCalledWith('success','Variable Deletion',postRetValue.message);     
     });
     it("After click delete all button at DELETE PAGE -> call AJAX DELETE (fail) -> report error", function() {
@@ -390,9 +399,13 @@ describe("Event Trigger Test Suite", function() {
         spyOn(window, 'ajaxPost').and.callFake(function(url,formData, cb) {
             cb(postRetValue);
         });
+        spyOn(window, 'checkRequiredField').and.callFake(function(obj,cb) {
+            cb(true);
+        });
             
         $('#user-change-pass-confirm').trigger('click');
         expect(reportDialog).toHaveBeenCalledWith('success','Change password',postRetValue.message); 
+        expect(checkRequiredField).toHaveBeenCalledWith('.user-change-pass-form',jasmine.any(Function)); 
         expect(ajaxPost).toHaveBeenCalledWith('changePass',jasmine.any(Object),jasmine.any(Function)); 
         expect(displayPage).toHaveBeenCalledWith('user'); 
         expect(reportDialog).not.toHaveBeenCalledWith('error','Change password',postRetValue.message); 
@@ -407,12 +420,39 @@ describe("Event Trigger Test Suite", function() {
         spyOn(window, 'ajaxPost').and.callFake(function(url,formData,cb) {
             cb(postRetValue);
         });
+        spyOn(window, 'checkRequiredField').and.callFake(function(obj,cb) {
+            cb(true);
+        });
             
         $('#user-change-pass-confirm').trigger('click');
         expect(reportDialog).not.toHaveBeenCalledWith('success','Change password',postRetValue.message); 
+        expect(checkRequiredField).toHaveBeenCalledWith('.user-change-pass-form',jasmine.any(Function)); 
         expect(ajaxPost).toHaveBeenCalledWith('changePass',jasmine.any(Object),jasmine.any(Function)); 
         expect(displayPage).not.toHaveBeenCalledWith('user'); 
         expect(reportDialog).toHaveBeenCalledWith('error','Change password',postRetValue.message); 
+    });
+    it("After click confirm change password at USER PAGE with empty value in required field -> report warning", function() {
+        var testMsg = 'test msg';
+        var postRetValue = {
+            status : true,
+            message : testMsg
+        }
+        spyOn(window, 'displayPage').and.callFake(function() { });
+        spyOn(window, 'reportDialog').and.callFake(function() { });
+        spyOn(window, 'ajaxPost').and.callFake(function(url,formData, cb) {
+            cb(postRetValue);
+        });
+        spyOn(window, 'checkRequiredField').and.callFake(function(obj,cb) {
+            cb(false, testMsg);
+        });
+            
+        $('#user-change-pass-confirm').trigger('click');
+        
+        expect(checkRequiredField).toHaveBeenCalledWith('.user-change-pass-form',jasmine.any(Function)); 
+        expect(ajaxPost).not.toHaveBeenCalledWith('changePass',jasmine.any(Object),jasmine.any(Function)); 
+        expect(displayPage).not.toHaveBeenCalledWith('user'); 
+        expect(reportDialog).toHaveBeenCalledWith('warn','Field is required',testMsg); 
+        expect(reportDialog).not.toHaveBeenCalledWith('error','Change password',postRetValue.message); 
     });
     it("After click logout button -> call logout function", function() {
         spyOn(window, 'logout').and.callFake(function() { });

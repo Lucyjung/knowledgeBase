@@ -36,6 +36,7 @@ var jsFilesToInject = [
   'js/dependencies/page_util.js',
   'js/dependencies/form-util.js',
   'js/dependencies/script.js',
+  'js/dependencies/onload.js',
   'js/dependencies/**/*.js',
   'js/**/*.js'
 ];

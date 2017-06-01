@@ -25,12 +25,7 @@ module.exports = {
             }
             else{
                 if (record){
-                    if(req.body.type == sails.config.createType.new){
-                        return res.json({
-                            status : false,
-                            message: 'Variable is already exist'
-                        });
-                    }
+
                     req.body.revision = record.revision;
                     req.body['case'] = record.case;
                     if(req.body.type == sails.config.createType.update_param){
@@ -126,18 +121,52 @@ module.exports = {
             {
                 if (foundVariable)
                 {
-                    query_data = {
+                    query_data = [{
                         id : foundVariable.case,
                         status : true,
                         approve_status : true
-                    };
+                    },
+                    {
+                        id : foundVariable.case,
+                        owner_id : req.session.me,
+                        status : true,
+                        approve_status : false,
+                    }
+                    ];
                     Case.find(query_data).exec(function (err, foundCase){
-                        foundVariable.case = foundCase;
-                        return res.json({
-                            status : true,
-                            message: 'Variable query successful',
-                            variable : foundVariable
-                         });
+                        if (foundCase.length > 0){
+                            var len = foundCase.length;
+                            var completedCnt = 0;
+                            var results = [];
+                            foundCase.forEach(function(value){
+
+                                User.findOne({id: value.owner_id}).exec(function (error, foundUser) {
+                                    if (foundUser){
+                                        value.owner_name = foundUser.name;
+                                    }
+                                    else{
+                                        value.owner_name =  value.username;
+                                    }
+                                    results.push(value);
+                                    completedCnt++;
+                                    if (len == completedCnt){
+                                        foundVariable.case = results;
+                                        return res.json({
+                                            status : true,
+                                            message: 'Variable query successful',
+                                            variable : foundVariable
+                                          });
+                                    }
+                                });
+                            });
+                        }
+                        else{
+                            return res.json({
+                                status : false,
+                                message: 'Variable not found'
+                             });
+                        }
+                        
                     });
                     
                 }
@@ -167,11 +196,31 @@ module.exports = {
             {
                 if (record)
                 {
-                    return res.json({
-                        status : true,
-                        message: 'Variable query successful',
-                        case : record
-                      });
+                    len = record.length;
+                    completedCnt = 0;
+                    results = [];
+                    record.forEach(function(value){
+                        User.findOne({id: value.owner_id}).exec(function (error, foundUser) {
+                        if (foundUser){
+                            value.owner_name = foundUser.name;
+                        }
+                        else{
+                            value.owner_name =  value.username;
+                        }
+                        results.push(value);
+                        completedCnt++;
+                        if (len == completedCnt){
+                            record.case = results;
+                            return res.json({
+                                status : true,
+                                message: 'Variable query successful',
+                                case : record
+                              });
+                        }
+                        });
+                        
+                    });
+                    
                 }
                 else{
                     return res.json({
@@ -299,13 +348,28 @@ module.exports = {
                 });
                 var len = unique_record.length;
                 unique_record.forEach(function( value) {
-                    Case.count({id:value.case, status : true}).exec(function countCB(error, found) {
+                    query_data = [{
+                        id : value.case,
+                        status : true,
+                        approve_status : true
+                    },
+                    {
+                        id : value.case,
+                        owner_id : req.session.me,
+                        status : true,
+                        approve_status : false,
+                    }
+                    ];
+                    Case.find(query_data).exec(function countCB(error, found) {
                         var result = [value.name , 
                                     value.revision , 
-                                    found , 
+                                    found.length , 
                                     value.updatedAt
                         ];
-                        results.push(result);
+                        if (found.length  > 0){
+                            results.push(result);
+                        }
+
                         completedCnt++;
                         if (len == completedCnt){
                             return res.json({
@@ -315,9 +379,117 @@ module.exports = {
                         }
                       });
                 });
-                
+
             }
         });
     },
+    convert :  function(req, res) {
+        const fs = require('fs');
+        var lineReader = require('line-reader');
+        var query_data = {
+            status : true
+        };
+        Case.find(query_data).exec(function (err, record){
+            if (err){
+                return res.json({
+                  status : false,
+                  message: 'Database connection error'
+                });
+            }
+            else 
+            {
+                results = [];
+                idList = [];
+                paramList = [];
+                paramNameList =[];
+                fileList = [];
+                for (var i in record){
+                    var varCase = record[i];
+                    for (var paramName in varCase.param){
+                        if (varCase.param[paramName].fileName !== undefined){
+
+                            idList.push(record[i].id);
+                            paramList.push(varCase.param);
+                            paramNameList.push(paramName);
+                            fileList.push(varCase.param[paramName].fileName);
+                        }
+                    }
+                };
+                async.eachSeries(fileList,function(fileName,callback){
+                    var dirname =  require('path').resolve(sails.config.appPath, 'assets/csv');
+                    var fullFileName = dirname + '\\' + fileName;
+                    var state = 'Search';
+                    var prev_line = '';
+                    var data;
+                    var beginVal;
+                    var endVal;
+                    lineReader.eachLine(fullFileName, function(line) {
+                        if ((line === '') && (state === 'Search')){
+                            state = 'Started';
+                        }
+                        else if(state === 'Started'){
+
+                            data = line.split(",");
+                            var firstVal = parseFloat(data[0]);
+                            var secondVal = parseFloat(data[1]);
+                            if (firstVal == secondVal){
+                                beginVal = firstVal;
+                                endVal = secondVal;
+                                state = 'Done';
+
+                            }
+                            else{
+                                beginVal = firstVal;
+                                state = 'FindEnd';
+                            }
+                        }
+                        else if (state == 'FindEnd'){
+                            
+                            if (line == ''){
+                                data = prev_line.split(",");
+                                endVal = parseFloat(data[data.length -2]);
+                                state = 'Done';
+                            }
+                            prev_line = line;
+                        }
+                        else if (state == 'Done'){
+                            var ret_val = {
+                                begin : beginVal,
+                                end : endVal
+                            }
+                            results.push(ret_val);
+                            state = 'Idle';
+                            callback();
+                        }
+
+                    });
+                }, function done(){
+                    var updateList = [];
+                    for(var index in idList){
+                        paramList[index][paramNameList[index]].begin = results[index].begin;
+                        paramList[index][paramNameList[index]].end = results[index].end;
+                        update = {
+                            query : idList[index],
+                            update : paramList[index]
+                        };
+                        updateList.push(update);
+                    }
+
+                    async.eachSeries(updateList,function(updateInfo,cb){
+                        Case.update({id :updateInfo.query},{param : updateInfo.update}).exec(function(err, updated){
+                            cb();
+                        });
+                    },function done(){
+                        return res.json({
+                            status : true
+                        })
+                    })
+                    
+                    
+                });
+                
+            }
+        });
+    }
 };
 

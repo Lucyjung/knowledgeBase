@@ -1,9 +1,9 @@
 <div class="col-md-12" id="welcome-component" style="display: none;">
     <div class="centered">
-        <div class="col-xs-6 col-md-5">
+        <div class="col-xs-6 col-md-10">
             <h3>Hello ! <span class="label label-default" id="user-span"> </span></h3>
             <h3>What can I do for you ? </h3>
-            <img src="images/default.jpg" class="img-circle" alt="Avatar not found" id="user-avatar">
+            <img src="images/default.jpg" class="img-circle" alt="Avatar not found" id="user-avatar" style= "width: 300px; max-height: 300px"> <br>
             <ul class="nav nav-tabs span2 clearfix"></ul>
             <div class="btn-group" role="group" style="margin-top:10px;">
                 <button type="button" class="btn btn-default" id="user-change-avatar-button">Change Picture </button>
@@ -13,7 +13,7 @@
         </div>
     </div>
 </div>
-<div class="container" id="change-avatar-component" style="display: none;">
+<div class="col-md-12" id="change-avatar-component" style="display: none;">
     <div class="centered" style="margin-top:10px;">
         <div class="col-md-6">
             <div class="form-group">
@@ -31,42 +31,56 @@
         </div>
     </div>
 </div>
-<div class="container" id="change-pass-component" style="display: none;">
-    <div class="centered">
+<div class="col-md-12" id="change-pass-component" style="display: none;">
+
+
+	<div class="centered"> 
+		
         <div class="form-horizontal" style="margin-top:10px;">
+		
+        <!-- Password input-->
+		 
+        <div class="form-group">
+			
+			<div class="col-md-5">
+				Old Password
+			</div>
+			
+			<div class="col-md-7">
+				<input id="user-old-pass" name="old_password" type="password" placeholder="Old Password" class="form-control input-md" required="">
+			</div>
+		</div>
+        
 
         <!-- Password input-->
         <div class="form-group">
-          <div class="col-md-12">
-            <input id="user-old-pass" name="old_password" type="password" placeholder="Old Password" class="form-control input-md" required="">
-
-          </div>
+			<div class="col-md-5">
+				New Password
+			</div>
+			
+			<div class="col-md-7">
+				<input id="user-new-pass" name="new_password" type="password" placeholder="New Password" class="form-control input-md" required="">
+			</div>
         </div>
 
         <!-- Password input-->
         <div class="form-group">
-          <div class="col-md-12">
-            <input id="user-new-pass" name="new_password" type="password" placeholder="New Password" class="form-control input-md" required="">
-
-          </div>
-        </div>
-
-        <!-- Password input-->
-        <div class="form-group">
-          <div class="col-md-12">
+			<div class="col-md-5">
+				Confirm New Password
+			</div>
+			<div class="col-md-7">
             <input id="user-confirm-pass" type="password" placeholder="Confirm New Password" class="form-control input-md" required="">
-
-          </div>
+			</div>
         </div>
 
         <!-- Button (Double) -->
         <div class="form-group">
-          <div class="col-md-8">
+          <div class="col-md-12">
             <button id="user-change-pass-confirm" class="btn btn-success">Submit</button>
           </div>
         </div>
         </div>
-    </div>
+	</div>
 </div>
 <blockquote id="welcome-footer-component" style="display: none;">
     <div class="centered" >

@@ -49,21 +49,24 @@ module.exports.policies = {
 		// feed : ['isNiceToAnimals', 'hasRabbitFood']
 	// }
     '*': true,
-
+    MainController: {
+      index: true,  
+    },
     UserController: {
       '*': 'isAuthenticated',
       login: true,
       signup: 'isAdmin',
       find : 'isAdmin',
       destroy : 'isAdmin',
-      resetPassword : 'isAdmin'
+      resetPassword : 'isAdmin',
+      data : true
     },
     VariablesController: {
       '*': 'isAuthenticated',
       approve : 'isAdmin',
       reject : 'isAdmin',
       destroy : 'isAdmin',
-      findAll : true
+      convert : true,
     },
     XlsController: {
       '*': 'isAuthenticated',

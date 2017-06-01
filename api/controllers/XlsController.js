@@ -32,20 +32,32 @@ module.exports = {
             });
             var fs = require('fs');
             var XLS = require('xlsjs');
-            var workbook = XLS.readFile(uploadedFiles[0].fd);
-            var ramSheet = workbook.Sheets['RAM'];
-            // delete file for saving space
-            fs.unlinkSync(uploadedFiles[0].fd);
-            ddParser.getMinMaxElevel(ramSheet,req.body.name,function (err, value){
-                return res.json({
-                  status : err,
-                  message: value
+            
+            try{
+                var workbook = XLS.readFile(uploadedFiles[0].fd);
+
+                // delete file for saving space
+                fs.unlinkSync(uploadedFiles[0].fd);
+                if (workbook.Sheets['RAM'] == undefined) return res.json({
+                      status : false,
+                      message: 'File is invalid'
                 });
-            });
-            
-            
+                var ramSheet = workbook.Sheets['RAM'];
+
+
+                ddParser.getMinMaxElevel(ramSheet,req.body.name,function (err, value){
+                    return res.json({
+                      status : err,
+                      message: value
+                    });
+                });
+            }catch(e){
+                return res.json({
+                      status : err,
+                      message: 'File is invalid'
+                    });
+            }
 	});
-        
     }
 };
 

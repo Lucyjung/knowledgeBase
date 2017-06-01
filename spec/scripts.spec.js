@@ -108,7 +108,7 @@ describe("Global Method Test Suite", function() {
 
         expect(checkRequiredField).toHaveBeenCalledWith('#vstg-varadd2-table-value',jasmine.any(Function));  
         expect(ajaxPost).toHaveBeenCalledWith('variables',jasmine.any(Object),jasmine.any(Function));     
-        expect(displayPage).toHaveBeenCalledWith('vstg'); 
+        expect(displayPage).toHaveBeenCalledWith('vstg-main'); 
         expect(reportDialog).toHaveBeenCalledWith('success','Variable creation',postRetValue.message); 
     });
     it("Add Variable Method - call check required field function (success) -> call getVariableData -> AJAX POST (fail) -> report error", function() {
@@ -217,7 +217,7 @@ describe("Global Method Test Suite", function() {
 
         expect(checkRequiredField).toHaveBeenCalledWith('#vstg-varedit2-table-value',jasmine.any(Function));  
         expect(ajaxPost).toHaveBeenCalledWith('variables',jasmine.any(Object),jasmine.any(Function));     
-        expect(displayPage).toHaveBeenCalledWith('vstg'); 
+        expect(displayPage).toHaveBeenCalledWith('vstg-main'); 
         expect(reportDialog).toHaveBeenCalledWith('success','Variable modification',postRetValue.message); 
     });
     it("Edit Variable Method - call check required field function (success) -> call getVariableData -> AJAX POST (fail) -> report error", function() {
@@ -379,13 +379,15 @@ describe("Global Method Test Suite", function() {
         var variable = {
             fileName : 'testFileName',
             before : 1,
-            after : 2
+            after : 2,
+            isKey : "true"
         };
         var expectedResult = '' +
-          '<tr data-value="' + name + '">' +
+          '<tr class="clickable-row" data-value="' + name + '">' +
           '<td>' + name + 
           '<input type="hidden" class="form-control" name="type" value="RxM"' +
           '</td>' +
+          '<td><input type="checkbox" name="isKey" checked></td>' + 
           '<td><input type="text" class="form-control" placeholder="Before" name="before" value="'+variable.before+'"  required>' + '</td>' +
           '<td><input type="text" class="form-control" placeholder="After" name="after" value="'+variable.after+'" required>' + '</td>' +
           '</tr>';
@@ -399,15 +401,17 @@ describe("Global Method Test Suite", function() {
         var variable = {
             fileName : 'testFileName',
             before : 1,
-            after : 2
+            after : 2,
+            isKey : "false"
         };
         var htmlExportButton = '<td><a href="'+ 'csv/' +variable.fileName+'" download="' +name +'.csv"' +'>' + 
             '<button type="submit" class="btn btn-default" >Export</button>' + '</td>'+
             '</a>'; 
         var expectedResult = '' +
-          '<tr data-value="' + name + '">' +
+          '<tr class="clickable-row" data-value="' + name + '">' +
           '<td>' + name + 
           '<input type="hidden" class="form-control" name="type" value="MAP"></td>' +
+          '<td><input type="checkbox" name="isKey" ></td>' + 
           htmlExportButton + 
           '<td><input type="file" name="' + name +'" data-fileName="'+variable.fileName +'">' + 
           '<input type="hidden" class="form-control" name="fileName" value="'+ variable.fileName +'"></td>' +
@@ -603,7 +607,7 @@ describe("Global Method Test Suite", function() {
         expect($('#vstg-'+pageName+'-table-ddver').val()).toEqual(data.ddVersion); 
 
     });
-    it("approveAction Method - call AJAX POST (success) -> display VSTG PAGE + report success", function() {
+    it("approveAction Method - call AJAX POST (success) -> display VSTG PAGE + report success ", function() {
         var postRetValue = {
             status : true,
             message : 'test msg'
@@ -618,7 +622,7 @@ describe("Global Method Test Suite", function() {
         approveAction();
         
         expect(ajaxPost).toHaveBeenCalledWith('variables/approve',jasmine.any(Object),jasmine.any(Function)); 
-        expect(displayPage).toHaveBeenCalledWith('vstg'); 
+        expect(displayPage).toHaveBeenCalledWith('vstg-main'); 
         expect(updateApproveBadge).toHaveBeenCalled(); 
         expect(reportDialog).toHaveBeenCalledWith('success','Variable approval',postRetValue.message); 
 

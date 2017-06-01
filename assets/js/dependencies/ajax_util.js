@@ -22,9 +22,14 @@ function ajaxPost(url, data, callback){
   $.ajax({
     type : "POST",
     url: url,
-    data : data
-  }).done(function(data){
-    callback(data);
+    data : data,
+    beforeSend: function() {
+        $('#loadingDiv').modal('show');
+    },
+    success: function(data) {
+        $('#loadingDiv').modal('hide');
+        callback(data);
+    }
   });
 };
 

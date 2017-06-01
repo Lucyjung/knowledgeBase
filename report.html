@@ -348,11 +348,11 @@ body {
 <body>
     <div id="mocha">
         <ul id="stats">
-            <li class="passes">passes: <em>19</em></li>
+            <li class="passes">passes: <em>20</em></li>
             <li class="failures">failures: <em>0</em></li>
-            <li class="duration">duration: <em>6.3s</em></li>
+            <li class="duration">duration: <em>7.2s</em></li>
         </ul>
-        <ul id="report"><li class="suite"><h1>UserController</h1><ul><li class="suite"><h1>#login()</h1><ul><li class="test pass slow"><h2>should return json with test user data<span class="duration">119ms</span></h2><pre><code>var agent = request.agent(sails.hooks.http.app);
+        <ul id="report"><li class="suite"><h1>UserController</h1><ul><li class="suite"><h1>#login()</h1><ul><li class="test pass slow"><h2>should return json with test user data<span class="duration">125ms</span></h2><pre><code>var agent = request.agent(sails.hooks.http.app);
 agent
     .post('/login')
     .send({ username: '0000', password: default_password })
@@ -364,35 +364,35 @@ agent
         &quot;message&quot;: &quot;Login successfully !!&quot;,
         &quot;username&quot;: &quot;0000&quot;,
         &quot;name&quot; : &quot;Test Admin&quot;
-    }, done);</code></pre></li></ul></li><li class="suite"><h1>#logout()</h1><ul><li class="test pass slow"><h2>should return json with success status<span class="duration">103ms</span></h2><pre><code>authenticated
+    }, done);</code></pre></li></ul></li><li class="suite"><h1>#logout()</h1><ul><li class="test pass fast"><h2>should return json with success status<span class="duration">37ms</span></h2><pre><code>authenticated
                 .post('/logout')
                 .send()
                 .expect(200)
                 .expect({
                     &quot;status&quot; : true,
                     &quot;message&quot;: &quot;Logged out successfully!&quot;
-                }, done);</code></pre></li></ul></li><li class="suite"><h1>#signup()</h1><ul><li class="test pass slow"><h2>should sign up a user<span class="duration">131ms</span></h2><pre><code>authenticated
+                }, done);</code></pre></li></ul></li><li class="suite"><h1>#signup()</h1><ul><li class="test pass slow"><h2>should sign up a user<span class="duration">144ms</span></h2><pre><code>authenticated
                 .post('/signup')
                 .send({ username: user_login_id, name: user_name })
                 .expect(200)
                 .expect({
                     &quot;status&quot; : true,
                     &quot;message&quot;: &quot;Sign up successfully&quot;
-                }, done);</code></pre></li></ul></li><li class="suite"><h1>#signup() with existing user</h1><ul><li class="test pass fast"><h2>should return an error<span class="duration">29ms</span></h2><pre><code>authenticated
+                }, done);</code></pre></li></ul></li><li class="suite"><h1>#signup() with existing user</h1><ul><li class="test pass medium"><h2>should return an error<span class="duration">41ms</span></h2><pre><code>authenticated
                 .post('/signup')
                 .send({ username: user_login_id, name: 'Test User, will be deleted soon' })
                 .expect(200)
                 .expect({
                     &quot;status&quot; : false,
                     &quot;message&quot;: 'User already exist'
-                }, done);</code></pre></li></ul></li><li class="suite"><h1>#signup() with not parameter</h1><ul><li class="test pass slow"><h2>should return an error<span class="duration">95ms</span></h2><pre><code>authenticated
+                }, done);</code></pre></li></ul></li><li class="suite"><h1>#signup() with not parameter</h1><ul><li class="test pass fast"><h2>should return an error<span class="duration">37ms</span></h2><pre><code>authenticated
                 .post('/signup')
                 .send()
                 .expect(200)
                 .expect({
                     &quot;status&quot; : false,
                     &quot;message&quot;: 'Username and name are required'
-                }, done);</code></pre></li></ul></li><li class="suite"><h1>#Find user</h1><ul><li class="test pass fast"><h2>should delete an user<span class="duration">32ms</span></h2><pre><code>authenticated
+                }, done);</code></pre></li></ul></li><li class="suite"><h1>#Find user</h1><ul><li class="test pass medium"><h2>should delete an user<span class="duration">46ms</span></h2><pre><code>authenticated
                 .get('/user')
                 .send()
                 .expect(200)
@@ -403,21 +403,21 @@ agent
                         } 
                     }
                     done(err);
-                  });</code></pre></li></ul></li><li class="suite"><h1>#changeRole</h1><ul><li class="test pass medium"><h2>should change an user role<span class="duration">40ms</span></h2><pre><code>authenticated
+                  });</code></pre></li></ul></li><li class="suite"><h1>#changeRole</h1><ul><li class="test pass medium"><h2>should change an user role<span class="duration">54ms</span></h2><pre><code>authenticated
                 .post('/user/role')
                 .send({id: user_id, role:'ROLE-USER'})
                 .expect(200)
                 .expect({
                     &quot;status&quot; : true,
                     &quot;message&quot;: 'Test User, will be deleted soon' + ' Role has been completely updated'
-                }, done);</code></pre></li></ul></li><li class="suite"><h1>#Role</h1><ul><li class="test pass fast"><h2>should query an user role<span class="duration">30ms</span></h2><pre><code>authenticated
+                }, done);</code></pre></li></ul></li><li class="suite"><h1>#Role</h1><ul><li class="test pass medium"><h2>should query an user role<span class="duration">39ms</span></h2><pre><code>authenticated
                 .get('/user/role')
                 .send()
                 .expect(200)
                 .expect({
                     &quot;status&quot; : true,
                     &quot;role&quot;: 'ROLE-ADMIN'
-                }, done);</code></pre></li></ul></li><li class="suite"><h1>#changePass</h1><ul><li class="test pass slow"><h2>should change password of an user<span class="duration">318ms</span></h2><pre><code>var agent = request.agent(sails.hooks.http.app);
+                }, done);</code></pre></li></ul></li><li class="suite"><h1>#changePass</h1><ul><li class="test pass slow"><h2>should change password of an user<span class="duration">342ms</span></h2><pre><code>var agent = request.agent(sails.hooks.http.app);
             agent
                 .post('/login')
                 .send({ username: user_login_id, password: default_password })
@@ -431,7 +431,7 @@ agent
                         &quot;status&quot; : true,
                         &quot;message&quot;: 'Password has been successfully updated'
                     }, done);
-                  });</code></pre></li></ul></li><li class="suite"><h1>#login with invalid password</h1><ul><li class="test pass slow"><h2>should change password of an user<span class="duration">129ms</span></h2><pre><code>var agent = request.agent(sails.hooks.http.app);
+                  });</code></pre></li></ul></li><li class="suite"><h1>#login with invalid password</h1><ul><li class="test pass slow"><h2>should change password of an user<span class="duration">158ms</span></h2><pre><code>var agent = request.agent(sails.hooks.http.app);
             agent
                 .post('/login')
                 .send({ username: user_login_id, password: default_password })
@@ -439,21 +439,21 @@ agent
                 .expect({
                     &quot;status&quot; : false,
                     &quot;message&quot;: 'incorrect Username/password'
-                }, done);</code></pre></li></ul></li><li class="suite"><h1>#Reset Password</h1><ul><li class="test pass slow"><h2>should reset password of an user<span class="duration">134ms</span></h2><pre><code>authenticated
+                }, done);</code></pre></li></ul></li><li class="suite"><h1>#Reset Password</h1><ul><li class="test pass slow"><h2>should reset password of an user<span class="duration">157ms</span></h2><pre><code>authenticated
                 .post('/user/resetPass')
                 .send({ id: user_id})
                 .expect(200)
                 .expect({
                     &quot;status&quot; : true,
                     &quot;message&quot;: user_name+' Role has been completely updated'
-                }, done);</code></pre></li></ul></li><li class="suite"><h1>#Delete User</h1><ul><li class="test pass slow"><h2>should delete an user<span class="duration">104ms</span></h2><pre><code>authenticated
+                }, done);</code></pre></li></ul></li><li class="suite"><h1>#Delete User</h1><ul><li class="test pass medium"><h2>should delete an user<span class="duration">51ms</span></h2><pre><code>authenticated
             .delete('/user')
             .send({id : user_id})
             .expect(200)
             .expect({
                 &quot;status&quot; : true,
                 &quot;message&quot;: 'User has been completely deleted'
-            }, done);</code></pre></li></ul></li><li class="suite"><h1>#Upload Avatar</h1><ul></ul></li></ul></li><li class="suite"><h1>VariablesController</h1><ul><li class="suite"><h1>#create()</h1><ul><li class="test pass medium"><h2>should create new variable<span class="duration">49ms</span></h2><pre><code>authenticated
+            }, done);</code></pre></li></ul></li><li class="suite"><h1>#Upload Avatar</h1><ul></ul></li><li class="suite"><h1>#data</h1><ul></ul></li></ul></li><li class="suite"><h1>VariablesController</h1><ul><li class="suite"><h1>#create()</h1><ul><li class="test pass medium"><h2>should create new variable<span class="duration">50ms</span></h2><pre><code>authenticated
                 .post('/variables')
                 .send({
                     name : varName,
@@ -464,18 +464,7 @@ agent
                 .expect({
                     &quot;status&quot; : true,
                     &quot;message&quot;: 'Variable ' + varName + ' has been successfuly created'
-                }, done);</code></pre></li></ul></li><li class="suite"><h1>#find()</h1><ul><li class="test pass medium"><h2>should query a variable<span class="duration">44ms</span></h2><pre><code>authenticated
-                .get('/variables/?name='+varName)
-                .send()
-                .expect(200)
-                .end(function(err,res) {
-                    if ('variable' in res.body){
-                        done();
-                    }
-                    else{
-                       done('variable field is expected');
-                    }
-                  });</code></pre></li></ul></li><li class="suite"><h1>#findUnapprove()</h1><ul><li class="test pass slow"><h2>should query an unapprove case<span class="duration">166ms</span></h2><pre><code>authenticated
+                }, done);</code></pre></li></ul></li><li class="suite"><h1>#findUnapprove()</h1><ul><li class="test pass medium"><h2>should query an unapprove case<span class="duration">49ms</span></h2><pre><code>authenticated
                 .get('/variables/unApprove')
                 .send()
                 .expect(200)
@@ -491,14 +480,36 @@ agent
                     else{
                        done('should have unapprove case');
                     }
-                  });</code></pre></li></ul></li><li class="suite"><h1>#approve()</h1><ul><li class="test pass medium"><h2>should approve a case<span class="duration">61ms</span></h2><pre><code>authenticated
+                  });</code></pre></li></ul></li><li class="suite"><h1>#approve()</h1><ul><li class="test pass medium"><h2>should approve a case<span class="duration">56ms</span></h2><pre><code>authenticated
                 .post('/variables/approve')
                 .send({case_id:unApproveID })
                 .expect(200)
                 .expect({
                     &quot;status&quot; : true,
                     &quot;message&quot;: 'Variable has been completely approved'
-                }, done);</code></pre></li></ul></li><li class="suite"><h1>#create() (edit param)</h1><ul><li class="test pass slow"><h2>should update a case<span class="duration">122ms</span></h2><pre><code>authenticated
+                }, done);</code></pre></li></ul></li><li class="suite"><h1>#find()</h1><ul><li class="test pass medium"><h2>should query a variable<span class="duration">54ms</span></h2><pre><code>authenticated
+                .get('/variables/?name='+varName)
+                .send()
+                .expect(200)
+                .end(function(err,res) {
+                    if ('variable' in res.body){
+                        done();
+                    }
+                    else{
+                       done('variable field is expected');
+                    }
+                  });</code></pre></li></ul></li><li class="suite"><h1>#findAll()</h1><ul><li class="test pass slow"><h2>should query all cases<span class="duration">103ms</span></h2><pre><code>authenticated
+                .get('/variables/findAll')
+                .send()
+                .expect(200)
+                .end(function(err,res) {
+                    if ('data' in res.body &amp;&amp; res.body.data.length &gt; 0){
+                        done();
+                    }
+                    else{
+                       done('should have unapprove case');
+                    }
+                  });</code></pre></li></ul></li><li class="suite"><h1>#create() (edit param)</h1><ul><li class="test pass medium"><h2>should update a case<span class="duration">49ms</span></h2><pre><code>authenticated
                 .post('/variables')
                 .send({
                     name : varName,
@@ -509,7 +520,7 @@ agent
                 .expect({
                     &quot;status&quot; : true,
                     &quot;message&quot;: 'Variable ' + varName + ' has been successfuly updated'
-                }, done);</code></pre></li></ul></li><li class="suite"><h1>#reject</h1><ul><li class="test pass medium"><h2>should reject a case<span class="duration">73ms</span></h2><pre><code>authenticated
+                }, done);</code></pre></li></ul></li><li class="suite"><h1>#reject</h1><ul><li class="test pass slow"><h2>should reject a case<span class="duration">77ms</span></h2><pre><code>authenticated
                 .get('/variables/unApprove')
                 .send()
                 .expect(200)
@@ -532,7 +543,7 @@ agent
                     else{
                        done('should have an unapprove case');
                     }
-                  });</code></pre></li></ul></li><li class="suite"><h1>#destroy()</h1><ul><li class="test pass medium"><h2>should delete a variable<span class="duration">41ms</span></h2><pre><code>authenticated
+                  });</code></pre></li></ul></li><li class="suite"><h1>#destroy()</h1><ul><li class="test pass medium"><h2>should delete a variable<span class="duration">49ms</span></h2><pre><code>authenticated
                 .delete('/variables')
                 .send({
                     name : varName

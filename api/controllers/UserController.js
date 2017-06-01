@@ -6,7 +6,50 @@
  */
 
 module.exports = {
+  /**
+   * `UserController.getUserData()`
+   */
+  data: function (req, res) {
+    if (req.session.me && req.cookies && req.cookies.user){
+        if (req.session.me !== req.cookies.user){
+            return res.json({
+                status : false,
+                message: 'User not found',
+            });
+        }
+        User.findOne({
+            id: req.cookies.user
+        }).exec(function (err, foundUser){
+            if (foundUser){
+                    var isAdmin = false;
+                if (foundUser.role == sails.config.userRole.admin){
+                    isAdmin = true;
+                }
+                return res.json({
+                    status: true,
+                    message: 'Login successfully !!',
+                    username : foundUser.username,
+                    name : foundUser.name,
+                    img : foundUser.avatarFd,
+                    admin : isAdmin
+                });
+            }
+            else{
+                return res.json({
+                    status : false,
+                    message: 'User not found',
+                });
+            }
 
+        });
+        }
+        else{
+            return res.json({
+                status : false,
+                message: 'User not found',
+            });
+        }
+  },
   /**
    * `UserController.login()`
    */
@@ -33,7 +76,7 @@ module.exports = {
     // "Forget" the user from the session.
     // Subsequent requests from this user agent will NOT have `req.session.me`.
     req.session.me = null;
-
+    res.cookie('user',null);
     return res.json({
                 status : true,
 		message: 'Logged out successfully!',
@@ -45,7 +88,8 @@ module.exports = {
    * `UserController.signup()`
    */
   signup: function (req, res) {
-    if (req.body.name == undefined || req.body.username == undefined)  {
+    if (req.body.name == undefined || req.body.username == undefined || 
+           req.body.name == "" || req.body.username == "")  {
         return res.json({
               status : false,
               message: 'Username and name are required'

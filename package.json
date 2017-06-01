@@ -30,7 +30,7 @@
   "scripts": {
     "debug": "node debug app.js",
     "start": "node app.js",
-	"test" : "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/**/*.test.js",
+    "test" : "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/**/*.test.js",
     "test_server": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/**/*.test.js --reporter mocha-simple-html-reporter --reporter-options output=report.html",
     "test_client": "node testServer.js"
   },

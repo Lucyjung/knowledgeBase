@@ -2,6 +2,12 @@ $('#login-button').on("click",function(){
     login();
 });
 
+$('#inputPassword').on('keyup', function (e) {
+    if (e.keyCode == 13) {
+        login();
+    }
+});
+
 $('#vstg-tab').on("click",function(){
     updateApproveBadge();
     displayPage('vstg-main');
@@ -22,6 +28,7 @@ $('#home-tab').on("click",function(){
 });
 
 $('#vstg-add-button').on("click",function(){
+    clearVstgAddField();
     displayPage('vstg-add');
 });
 
@@ -48,18 +55,41 @@ $('#vstg-varadd-table-add').on("click",function(){
             reportDialog('warn','Field is required',msg);
         }
         else{
-            var query_data = {
-                name : $('#vstg-varadd-table-varname').val()
-            };
-            ajaxGet('variables',query_data,function(data){
-                
-                if (data.status){
-                    reportDialog('error','Add variable','Duplicate variables');  
-                }else{
+            if (document.getElementById('vstg-varadd-ecm-var').checked){
+                var formData = {};
+                formData['name'] = $('#vstg-varadd-table-varname').val();
+                formData['type'] = $('#vstg-varadd-add-type').val();
+                formData['case'] = {};
+                getFormData('vstg-varadd-table',formData['case']);
+                getTextAreaData('#vstg-varadd-table',formData['case']);
+                ajaxPost('variables',formData, function(data){
+                    if (data.status){
+                        reportDialog('success','Variable creation',data.message); 
+                        displayPage('vstg-main-vstg');
+                    }
+                    else{
+                        reportDialog('error','Variable creation',data.message); 
+                    }
+                });
+            }
+            else{
+                var query_data = {
+                    name : $('#vstg-varadd-table-varname').val()
+                };
+                if ($('#vstg-varadd-add-type').val() == $('#local-type-new').html()){
+                    ajaxGet('variables',query_data,function(data){
+
+                        if (data.status ){
+                            reportDialog('error','Add variable','Duplicate variables');  
+                        }else{
+                            displayPage('vstg-add2');
+                        }
+                    });
+                }
+                else{
                     displayPage('vstg-add2');
                 }
-            });
-            
+            }
         }
     });
 });
@@ -105,6 +135,14 @@ $('#vstg-varadd-table-import').on("change",function(){
     
 });
 
+$('#vstg-varadd2-import-file').on("click",function(){
+    clearSetupFile(this,'varadd');
+});
+
+$('#vstg-varadd2-import-file').on("click",function(){
+    clearSetupFile(this,'varadd');
+});
+
 $('#vstg-varadd2-import-file').on("change",function(){
     decodeAndPopulateSetupFile(this,'varadd');
 });
@@ -132,11 +170,19 @@ $('#vstg-varedit-addcase-button').on("click",function(){
     displayPage('vstg-add-case');
 });
 
+$('#vstg-varadd-table-back').on("click",function(){
+    displayPage('vstg-edit');
+});
+
 $('#vstg-varedit-editvalue-button').on("click",function(){
     var name = $('#vstg-varedit-table-varname').val();
     $('#vstg-varedit2-table-varname').val(name);
     $('#vstg-varedit-casetable').find('input[name="optradio"]:checked').each(function(){
+        var isEcmVar = $(this).data("info").ecmVar;
+        $('#vstg-varedit2-table-comment').val($(this).data("info").description);
         $('#vstg-varedit2-import-fileName').val($(this).data("info").setupFileName);
+        $('#vstg-varedit2-import-file').attr('disabled', isEcmVar);
+        $('#vstg-varedit2-ecm-var').attr('checked', isEcmVar);
         $('#vstg-varedit2-table-value > tbody').children().each(function(){
             this.remove();
         });
@@ -153,12 +199,15 @@ $('#vstg-varedit-editvalue-button').on("click",function(){
             $('#vstg-varedit2-table-value > tbody:last-child').append(toAppend );
         }
         var addButtonId = "vstg-varedit2-table-add";
-        var toAddButton  = '<tr><td>' +
-            '<button type="button" class="btn btn-default" id="' + addButtonId + '">Submit</button>' + 
-            '</td></tr>';
+        var backButtonId = "vstg-varedit2-table-back";
+        var toAddButton  = '<tr>' +
+            '<td><button type="button" class="btn btn-default" id="' + addButtonId + '">Submit</button>' + 
+            '<button type="button" class="btn btn-default" id="' + backButtonId + '">Back</button></td>' + 
+            '</tr>';
         $('#vstg-varedit2-table-value > tbody:last-child').append(toAddButton);
 
         document.getElementById(addButtonId).onclick = editVariable;
+        document.getElementById(backButtonId).onclick = backFromEdit2;
     });
     displayPage('vstg-edit2');
 });
@@ -176,7 +225,7 @@ $('#vstg-varedit-submit-button').on("click",function(){
         if (data.status){
             reportDialog('success','Variable creation',data.message); 
             // TODO: clean up
-            displayPage('vstg');
+            displayPage('vstg-main');
         }
         else{
             reportDialog('error','Variable creation',data.message); 
@@ -194,8 +243,7 @@ $('#vstg-vardelete-case-button').on("click",function(){
     ajaxPost('variables',formData, function(data){
         if (data.status){
             reportDialog('success','Variable Deletion',data.message); 
-            // TODO: clean up
-            displayPage('vstg');
+            displayPage('vstg-main');
         }
         else{
             reportDialog('error','Variable Deletion',data.message); 
@@ -210,8 +258,7 @@ $('#vstg-vardelete-all-button').on("click",function(){
     ajaxDelete('variables',formData, function(data){
         if (data.status){
             reportDialog('success','Variable Deletion',data.message); 
-            // TODO: clean up
-            displayPage('vstg');
+            displayPage('vstg-main');
         }
         else{
             reportDialog('error','Variable Deletion',data.message); 
@@ -247,27 +294,38 @@ $('#user-change-pass-button').on("click",function(){
 });
 
 $('#user-change-pass-confirm').on("click",function(){
-    var passData = {};
-    getFormData('change-pass-component',passData);
-    var newPass = $('#user-new-pass').val();
-    var confirmNewPass = $('#user-confirm-pass').val();
-    if (newPass === confirmNewPass)
-    {
-        ajaxPost('changePass',passData, function(data){
-            if (data.status)
+    
+    checkRequiredField(".user-change-pass-form",function(status,msg){
+        if (status)
+        {
+            var passData = {};
+            getFormData('change-pass-component',passData);
+            var newPass = $('#user-new-pass').val();
+            var confirmNewPass = $('#user-confirm-pass').val();
+            if (newPass === confirmNewPass)
             {
-                reportDialog('success','Change password',data.message);  
-                displayPage('user');
+                ajaxPost('changePass',passData, function(data){
+                    if (data.status)
+                    {
+                        reportDialog('success','Change password',data.message);  
+                        displayPage('user');
+                    }
+                    else
+                    {
+                        reportDialog('error','Change password',data.message);  
+                    }
+                });
             }
-            else
-            {
-                reportDialog('error','Change password',data.message);  
+            else{
+                reportDialog('error','Change password','Passwords are not matched');  
             }
-        });
-    }
-    else{
-        reportDialog('error','Change password','Passwords are not matched');  
-    }
+        }
+        else
+        {
+            reportDialog('warn','Field is required',msg);
+        }
+    });
+    
     
 });
 
@@ -285,15 +343,20 @@ $('#vstg-approve-button').on("click",function(){
             for (var case_index in data.case)
             {
                 var case_no = Number(case_index) + 1;
+                var csvBtnHtml = 'No CSV File';
+                if (data.case[case_index].ecmVar == undefined || data.case[case_index].ecmVar == false){
+                    csvBtnHtml = '<a href="'+ 'csv/' +data.case[case_index].setupFileName+'" download="' +data.case[case_index].name + '_case' + case_no + '.csv">'+
+                    '<button type="submit" class="btn btn-default" id="' + 'vstg-approve-casetable-csv-button' + case_index +'">CSV</button>' + 
+                    '</a>';
+                }
                 var toAppend = '' +
                 '<tr>' +
                 '<td>' + case_no + '</td>' +
                 '<td>' + data.case[case_index].name + '</td>'+
-                '<td>' + data.case[case_index].description + '</td>'+
-                '<td>' + 
-                '<a href="'+ 'csv/' +data.case[case_index].setupFileName+'" download="' +data.case[case_index].name + '_case' + case_no + '.csv">' + 
-                '<button type="submit" class="btn btn-default" id="' + 'vstg-approve-casetable-csv-button' + case_index +'">CSV</button>' + 
-                '</a>' + '</td>'+
+                '<td class="td_whitespace">' + data.case[case_index].description + '</td>'+
+                '<td>' + csvBtnHtml
+                 + 
+                 '</td>'+
                 '<td>' + '<button type="button" class="btn btn-default" id="' + 'vstg-approve-casetable-var-button' + case_index +'">Value Setup</button>' + '</td>'+
                 '</tr>';
                 $('#vstg-approve-vartable > tbody:last-child').append(toAppend);
@@ -343,22 +406,6 @@ $(document).ready( function() {
         readURL(this);
     }); 
 
-    $('#vstg-main-table').DataTable({
-        ajax: {
-            url : "/variables/findAll"
-        },
-        "aoColumnDefs": [ {
-              "aTargets": [0],
-              "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                  $(nTd).html('<a href="javascript:void(0);"\><p onclick="clickFromTable(this)">'+sData+ '</p> </a>'); 
-              }
-            } ],
-        dom: 'Alfrtip',
-        alphabetSearch: {
-           column: 0 
-        },
-        "destroy": true
-   });
 });
      
 $('#admin-member-confirm-delete').on("click",function(){
@@ -435,4 +482,45 @@ $('#admin-member-apply-button').on("click",function(){
 
 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
   var target = $(e.target).attr("href"); // activated tab
+});
+$('#vstg-varadd2-table-value > tbody').on('click', '.clickable-row', function(event) {
+    toogleHighlightTbl(this);
+});
+$('#vstg-varedit2-table-value > tbody').on('click', '.clickable-row', function(event) {
+    toogleHighlightTbl(this);
+});
+
+$('#vstg-varadd-ecm-var').on('click', function() {
+    if (this.checked){
+        $('#vstg-varadd-table-comment').val($('#default-msg-ecm-var').html());
+    }
+    else{
+        $('#vstg-varadd-table-comment').val('');
+    }
+    
+});
+$('#vstg-varedit2-ecm-var').on('click', function() {
+    if (this.checked){
+        $('#vstg-varedit2-table-comment').val($('#default-msg-ecm-var').html());
+        $('#vstg-varedit2-import-file').attr('disabled', true);
+        $('#vstg-varedit2-import-file').val('');
+        $('#vstg-varedit2-table-value > tbody').children().each(function(){
+            this.remove();
+        });
+        var addButtonId = "vstg-varedit2-table-add";
+        var backButtonId = "vstg-varedit2-table-back";
+        var toAddButton  = '<tr>' +
+            '<td><button type="button" class="btn btn-default" id="' + addButtonId + '">Submit</button>' + 
+            '<button type="button" class="btn btn-default" id="' + backButtonId + '">Back</button></td>' + 
+            '</tr>';
+        $('#vstg-varedit2-table-value > tbody:last-child').append(toAddButton);
+
+        document.getElementById(addButtonId).onclick = editVariable;
+        document.getElementById(backButtonId).onclick = backFromEdit2;
+    }
+    else{
+        $('#vstg-varedit2-table-comment').val('');
+        $('#vstg-varedit2-import-file').attr('disabled', false);
+    }
+    
 });

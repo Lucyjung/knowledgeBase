@@ -78,25 +78,7 @@ describe('VariablesController', function() {
                 }, done);
         });
     });
-    describe('#find()', function() {
-        
-        it('should query a variable', function (done) {
-
-            authenticated
-                .get('/variables/?name='+varName)
-                .send()
-                .expect(200)
-                .end(function(err,res) {
-                    if ('variable' in res.body){
-                        done();
-                    }
-                    else{
-                       done('variable field is expected');
-                    }
-
-                  });
-        });
-    });
+    
     describe('#findUnapprove()', function() {
         
         it('should query an unapprove case', function (done) {
@@ -133,6 +115,44 @@ describe('VariablesController', function() {
                     "status" : true,
                     "message": 'Variable has been completely approved'
                 }, done);
+        });
+    });
+    describe('#find()', function() {
+        
+        it('should query a variable', function (done) {
+
+            authenticated
+                .get('/variables/?name='+varName)
+                .send()
+                .expect(200)
+                .end(function(err,res) {
+                    if ('variable' in res.body){
+                        done();
+                    }
+                    else{
+                       done('variable field is expected');
+                    }
+
+                  });
+        });
+    });
+    describe('#findAll()', function() {
+        
+        it('should query all cases', function (done) {
+
+            authenticated
+                .get('/variables/findAll')
+                .send()
+                .expect(200)
+                .end(function(err,res) {
+                    if ('data' in res.body && res.body.data.length > 0){
+                        done();
+                    }
+                    else{
+                       done('should have unapprove case');
+                    }
+
+                  });
         });
     });
     describe('#create() (edit param)', function() {

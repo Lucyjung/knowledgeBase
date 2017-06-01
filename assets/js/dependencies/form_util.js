@@ -48,4 +48,11 @@ function getFormDataByObj(obj, formData){
     }
   });
   
+  $(obj).find("input[type='checkbox']").each(function () {
+    var name = $(this).attr('name');
+    if (name != undefined){
+      formData[name] = this.checked;
+    }
+  });
+  
 };

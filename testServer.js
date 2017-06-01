@@ -15,6 +15,9 @@ app.get('/', function(req, res){
         userRole : {
             user : 'ROLE-USER',
             admin : 'ROLE-ADMIN'
+        },
+        defaultMsg : {
+            ecmVar : 'This variable can be directly adjusted by ECM Monitor'
         }
     });
 });
